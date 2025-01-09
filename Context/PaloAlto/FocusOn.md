@@ -1,5 +1,6 @@
 Focus On:
 
+
 1. Threat Detection & Research
    - **APT Methodologies**: Deepen knowledge of modern attacker TTPs and how to detect them.
    - **Malware Analysis**: Setting up lab simulations and reversing malware behavior.
@@ -25,7 +26,36 @@ Focus On:
    - Demonstrate how you coordinate with diverse teams and communicate findings effectively.
 
 
-"""
-The new Palo Alto–focused files highlight the same core security competencies (endpoint/network detection, threat research, coding, and incident response) that Meta also values. By sharpening your abilities in OS internals, TTP-based detection, machine learning, and Python/SQL for Palo Alto, you’re simultaneously building the technical depth and detection engineering expertise required for the MetaXDR role.
-"""
 
+# Only In Palo Alto
+- Endpoint & OS Internals
+   - Malware Research 
+- Network Protocols & Security 
+   - Kerberos
+   - RPC 
+      - Port: TCP/135
+   - SMB
+      - Port: TCP/445, UDP/445
+   - HTTP
+      - Port: TCP/80, TCP/443
+   - HTTPS
+      - Port: TCP/443
+   - SMTP
+      - Port: TCP/25, TCP/587
+   - SMTPS
+      - Port: TCP/465
+   - DNS
+      - Port: TCP/53, UDP/53
+   - DHCP
+      - Port: UDP/67, UDP/68
+   - Network Based Detection
+      - Attacker View - Attacker Techniques, Tactics, and Procedures
+      - Defender View - Defender Techniques, Tactics, and Procedures
+
+- Cloud & Enterprise Infrastructure
+   - Active Directory (AD)
+   - Security Products (FW, VPN)
+   - Cloud Security (AWS, Azure, GCP)
+
+
+# Technical Skills to Focus On
