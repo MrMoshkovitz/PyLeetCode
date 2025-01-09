@@ -1,3 +1,4 @@
 .vscode/
 Env/*
 Archives/*
+.env
