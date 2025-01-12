@@ -703,6 +703,21 @@ This are containerization commands for attackers to understand the containerizat
 | **`iptables`**          | Configures firewall rules to allow or block specific traffic.                                                                                 | - Disable firewalls to allow malicious communication.<br>- Add rules to block defensive mechanisms or monitoring tools.                                                       |
 | | **1. `iptables -L`**: Lists current firewall rules.                                                                                                                  | Analyze configurations to find misconfigurations or exploitable rules.                                                                                                       |
 | | **2. `iptables -A INPUT -p tcp --dport 22 -j ACCEPT`**: Allows incoming SSH connections.                                                                              | Enable SSH access for persistence or data exfiltration.                                                                                                                       |
+| | **`-p or --protocol`**: Specifies the protocol to match (e.g. tcp, udp, icmp) |
+| | **`--dport`**: Specifies the destination port to match |
+| | **`--sport`**: Specifies the source port to match |
+| | **`-s or --source`**: Specifies the source IP address to match |
+| | **`-d or --destination`**: Specifies the destination IP address to match |
+| | **`-m state`**: Matches the state of a connection (e.g. NEW, ESTABLISHED, RELATED) |
+| | **`-m multiport`**: Matches multiple ports or port ranges |
+| | **`-m tcp`**: Matches TCP packets and includes additional TCP-specific options |
+| | **`-m udp`**: Matches UDP packets and includes additional UDP-specific options |
+| | **`-m string`**: Matches packets that contain a specific string |
+| | **`-m limit`**: Matches packets at a specified rate limit |
+| | **`-m conntrack`**: Matches packets based on their connection tracking information |
+| | **`-m mark`**: Matches packets based on their Netfilter mark value |
+| | **`-m mac`**: Matches packets based on their MAC address |
+| | **`-m iprange`**: Matches packets based on a range of IP addresses |
 | **SELinux/AppArmor**    | Mandatory access control systems that enforce resource restrictions.                                                                          | - Bypass or disable policies for greater system control.<br>- Exploit weak or misconfigured profiles for unauthorized access.                                                 |
 | | **1. `getenforce`**: Displays the current SELinux status.                                                                                                            | Detect if SELinux is enforcing, permissive, or disabled to adjust exploitation techniques.                                                                                    |
 | | **2. `aa-status`**: Displays AppArmor profile statuses.                                                                                                              | Identify disabled or lenient profiles for potential exploitation.                                                                                                             |
@@ -814,3 +829,31 @@ This is the VNC (Virtual Network Computing) commands for attackers to understand
 | **`vncserver -list`**             | Lists active VNC sessions with ports and process IDs.                                           | Identify existing sessions for hijacking or enumeration.                                                             |
 
 ---
+
+## Linux Hardening & Security Commands
+Linux systems are inherently more secure than many alternatives, but no system is impervious to threats. Key security practices for Linux include keeping the OS updated, configuring firewalls, using fail2ban for login protection, and minimizing attack surfaces by disabling unnecessary services. Tools like Snort, chkrootkit, rkhunter, and Lynis help in auditing and monitoring the system. Other essential practices include enforcing strong passwords, managing user privileges, and configuring advanced security mechanisms such as SELinux, AppArmor, and TCP wrappers to restrict unauthorized access and improve defense in depth.
+
+### Linux Security Commands
+This is the Linux Security Commands for attackers to understand the Linux Security, the Linux Security user, the Linux Security group, the Linux Security start time, the Linux Security end time, the Linux Security memory usage, the Linux Security CPU usage, the Linux Security command line, and the Linux Security arguments.
+| **Command/Tool**          | **Description**                                                                 | **Attacker’s Perspective**                                                                                          |
+|---------------------------|---------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
+| **`apt update && apt dist-upgrade`** | Updates the system and installed packages to the latest versions.                          | Outdated systems can be targeted with known exploits. Attackers monitor patch releases to exploit unpatched systems. |
+| **`iptables`**            | Configures firewall rules to restrict or allow traffic.                                      | Analyze and bypass firewall rules to exploit misconfigurations or open services.                                     |
+| | **1. `iptables -L`**: Lists active rules.                                                                      | Enumerate rules to identify exploitable configurations or open ports.                                                |
+| **`fail2ban`**            | Prevents brute-force attacks by banning IPs after repeated failed logins.                    | Use slow brute-force attacks to avoid triggering bans or identify IP block patterns to evade detection.              |
+| **`sudo visudo`**         | Edits the sudoers file for managing user privileges.                                          | Exploit misconfigured sudo privileges to escalate access.                                                            |
+| | **1. Add `user ALL=(ALL) NOPASSWD: /bin/bash`**: Grants root privileges without a password.                      | Identify overly permissive sudo rules for privilege escalation.                                                      |
+| **`chkrootkit`**          | Checks for rootkits on the system.                                                           | Evade detection by using custom malware or tampering with chkrootkit binaries.                                       |
+| **`rkhunter`**            | Detects rootkits, backdoors, and exploits on the system.                                      | Disable or tamper with rkhunter logs to avoid detection.                                                             |
+| **`lynis audit system`**  | Performs a comprehensive security audit of the Linux system.                                  | Identify audit trails and misconfigurations to exploit weak security practices.                                       |
+| **`tcpdump`**             | Captures network traffic for analysis.                                                       | Analyze traffic for sensitive information or use encrypted protocols to evade monitoring.                            |
+| **`cat /etc/hosts.allow`** | Configures services and hosts allowed access via TCP wrappers.                               | Add attacker-controlled IPs to allow malicious access to restricted services.                                        |
+| | Example Rule: `sshd : 192.168.1.100`                                                                           | Grants SSH access to the attacker's IP.                                                                              |
+| **`cat /etc/hosts.deny`** | Configures services and hosts denied access via TCP wrappers.                                | Remove or modify rules to allow unrestricted access to blocked services.                                             |
+| | Example Rule: `ALL : .example.com`                                                                             | Blocks all hosts in the example.com domain.                                                                          |
+| **`getenforce`**          | Displays the current SELinux status.                                                        | Determine if SELinux is enforcing, permissive, or disabled to plan exploitation techniques.                          |
+| **`semanage fcontext`**   | Configures SELinux file contexts.                                                            | Exploit misconfigured SELinux policies to bypass access restrictions.                                                |
+| **`passwd -l <username>`**| Locks a user account to prevent login.                                                       | Identify accounts locked by administrators and attempt lateral movement to active accounts.                          |
+| **`find / -perm -4000`**  | Finds all SUID binaries on the system.                                                       | Exploit SUID binaries for privilege escalation.                                                                      |
+| **`systemctl disable <service>`** | Disables unnecessary or vulnerable services.                                        | Identify and exploit critical services left enabled by administrators.                                               |
+| **`ulimit -c 0`**         | Disables core dumps.                                                                         | Exploit enabled core dumps to analyze memory and extract sensitive information.                                      |

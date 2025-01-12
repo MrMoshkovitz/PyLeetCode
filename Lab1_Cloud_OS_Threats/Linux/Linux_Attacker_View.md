@@ -426,3 +426,82 @@ VNC allows remote desktop sharing based on the RFB protocol. It provides encrypt
 
 - **Attacker's Perspective**: Exploit weak passwords, intercept traffic, or brute-force VNC services to gain remote desktop control.
 
+
+---
+
+## Linux Hardening
+
+### **Linux Security**
+Linux systems are generally considered more secure than many alternatives, such as Windows, due to their reduced attack surface and built-in security mechanisms. However, no system is impervious to threats, particularly if improperly configured or left unpatched. To ensure robust security, administrators must implement several best practices, tools, and configurations.
+- 
+
+#### **Key Principles of Linux Security**
+1. **Keeping Systems Updated**  
+   Keeping the operating system and all installed packages up to date is critical. Vulnerabilities in outdated software are one of the primary entry points for attackers. Regular updates reduce exposure to known exploits and ensure that the system is equipped with the latest security enhancements.
+   - Command Example:  
+     `apt update && apt dist-upgrade`
+
+2. **Firewall and Network Controls**  
+   - Use Linux firewalls and **iptables** to restrict traffic to/from the host. This reduces exposure to unnecessary services and mitigates risks associated with open network ports.
+   - **iptables** is a powerful tool for configuring network traffic rules. It allows administrators to set up rules for filtering, logging, and redirecting network traffic based on source IP, destination IP, port, and protocol.
+   - If firewall rules are not properly configured, we can use the Linux firewall and/or **iptables** to restrict traffic into/out of the host.
+
+3. **SSH Security**  
+   - Avoid password-based SSH logins by enforcing key-based authentication.  
+   - Disable root login via SSH to minimize privilege escalation risks.  
+   - If SSH is open on the server
+      - Disallow password login
+      - Disallow the root user from logging in via SSH.
+   - Avoid logging or administering the system as the `root` user
+   - Adequately managing access control.
+
+4. **Principle of Least Privilege**  
+   - Users' Access should be determined based on the principle of least privilege.
+   - Limit user privileges to only what is necessary. Use tools like `sudo` to restrict specific commands instead of granting full administrative rights.  
+   - Mismanaged user privileges are a common source of exploitation during penetration tests.
+   - Avoid logging or administering the system as the `root` 
+   - If a user needs to run a command as root, then that command should be specified in the **sudoers** configuration instead of giving them full sudo rights.
+
+5. **Login Security**  
+   - Tools like **fail2ban** can monitor login attempts and temporarily ban IPs that exceed a defined threshold of failed logins.  
+      - This tool counts the number of failed login attempts, and if a user has reached the maximum number, the host that tried to connect will be handled as configured.
+   - Enforce password policies, including complexity, aging, and reuse restrictions, to strengthen login defenses.  
+
+6. **Auditing and Monitoring**  
+   - Regular audits can reveal vulnerabilities such as outdated kernels, world-writable files, misconfigured cron jobs, or unnecessary SUID/SGID binaries.  
+   - Tools like **chkrootkit**, **rkhunter**, and **Lynis** help detect rootkits, backdoors, misconfigurations, and other vulnerabilities.
+      - [chkrootkit](https://www.chkrootkit.org/ "A tool to check for the presence of rootkits on a Unix/Linux system")
+      - [rkhunter](https://packages.debian.org/sid/rkhunter "scans systems for known and unknown rootkits, backdoors, sniffers and exploits.")
+      - [Lynis](https://cisofy.com/lynis/ "Lynis is a security auditing tool for your Linux system. It was written specifically for detecting misconfigurations and vulnerabilities.")
+      - [Snort](https://www.snort.org/ "An open source, free and fast network intrusion detection system")
+
+7. 
+7. **Advanced Access Controls: SELinux and AppArmor**  
+   **Security-Enhanced Linux (SELinux)** and **AppArmor** are kernel modules for mandatory access control.  
+   - **SELinux**: Enforces fine-grained access controls by labeling processes, files, and directories. Policies dictate allowable interactions, preventing unauthorized access.  
+   - **AppArmor**: Uses profiles to restrict application capabilities, offering simplified but effective access controls.
+
+8. **TCP Wrappers**  
+   TCP Wrappers restrict access to specific services based on client IP addresses or hostnames. Configuration is managed through the `hosts.allow` and `hosts.deny` files, allowing administrators to grant or deny service access granularly. These files can be configured by adding specific rules to the files. **TCP wrappers use the following configuration files:**
+   - **/etc/hosts.allow**: specifies which services and hosts are allowed access to the system
+   - **/etc/hosts.deny**: specifies which services and hosts are not allowed access to the system
+
+
+
+9. **Hardening Measures**  
+   - Remove / Disable unnecessary services and software.  
+   - Remove services using unencrypted authentication mechanisms.  
+   - Ensure time synchronization (NTP) and logging (Syslog) are enabled.  
+   - Enforce user-specific accounts rather than shared logins.  
+   - Set up password aging and restrict the use of previous passwords.  
+   - Lock accounts after repeated failed login attempts.  
+   - Disable core dumps and unwanted SUID/SGID binaries.  
+
+10. **Safety as a Process**  
+    Security is an ongoing process requiring regular updates, training, and familiarity with the system. Administrators who understand the nuances of their Linux environment can implement better and more effective protections.
+
+
+## Firewall Setup 
+
+## System Logs & Monitoring (Sub topic 3)
+
