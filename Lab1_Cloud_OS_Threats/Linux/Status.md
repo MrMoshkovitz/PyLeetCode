@@ -10,10 +10,8 @@
    - ID: `cloud-sec-xdr-admin`
    - Email: `cloud-sec-xdr-admin@freemium-297909.iam.gserviceaccount.com`
 
----
 
-## Pending Tasks
-3. [ ] **Create a VPC Network**
+3. [ x ] **Create a VPC Network** ✅
    - Name: `cloud-sec-xdr-vpc`
    - Subnet: `cloud-sec-xdr-subnet-1`
    - Region: `us-central1`
@@ -21,10 +19,8 @@
    - Firewall: 
       - IN: `allow-gm-all-inbound`
       - OUT: `allow-gm-all-outbound`
-   <!-- - Router: `cloud-sec-xdr-router`
-   - NAT: `cloud-sec-xdr-nat` -->
-
-4. [ ] **Set up a VM Instance**
+   
+4. [ x ] **Set up a VM Instance** ✅
    - Name: `cloud-sec-xdr-vm-1`
    - ID: `[Auto-generated ID]`
    - Machine type: `e2-medium`
@@ -37,7 +33,7 @@
    - Service Account: `cloud-sec-xdr-admin`
 
 
-4. [ ] **Enable Compute Engine Services**
+4. [ x ] **Enable Compute Engine Services** ✅
    - Go to the [Google Cloud Console](https://console.cloud.google.com/).
    - Enable the Compute Engine API for the `CloudXDR` project.
 
@@ -46,12 +42,13 @@
      - `gcloud compute ssh [VM_NAME] --zone [ZONE]`
    - Confirm connectivity and basic shell access.
 
-6. [ ] **Explore Linux Basics (on VM)**
-   1. [ ] **Filesystem & Permissions**
+
+<!-- 6. [ x ] **Explore Linux Basics (on VM)** ✅
+   1. [ x ] **Filesystem & Permissions** ✅
        - Review file permissions and practice `chmod`, `chown`, and `ls -l`.
-   2. [ ] **Process Management**
+   2. [ x ] **Process Management** ✅
        - Use `ps`, `top`, and `kill` commands to manage processes.
-   3. [ ] **Memory Management**
+   3. [ x ] **Memory Management** ✅
        - Check memory usage with `free -h` and `vmstat`.
    4. [ ] **Networking**
        - Explore `netstat`, `ss`, and `ufw` for firewall settings.
@@ -60,4 +57,4 @@
    - Set up a custom IAM role for the service account:
      - Role Name: `xdr-vm-role`
      - Permissions: Minimum required for VM management.
-   - Apply the role to the `cloud-sec-xdr-admin` service account.
+   - Apply the role to the `cloud-sec-xdr-admin` service account. -->
