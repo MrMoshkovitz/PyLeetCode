@@ -295,7 +295,7 @@ For attackers, these capabilities enable reconnaissance of user accounts, privil
 4. **Persistence**: Add custom mount entries to `/etc/fstab` for persistent access to drives.
 
 
-### Containerization - Short Description
+### Containerization
 
 - **Definition**: Containerization packages applications and their dependencies into isolated environments for efficient and secure deployment.  
 - **Technologies**: Tools like Docker and Linux Containers (LXC) enable lightweight, portable, and scalable environments.  
@@ -313,3 +313,75 @@ For attackers, these capabilities enable reconnaissance of user accounts, privil
 7. **Secure Containers**: Configure Docker or LXC settings to limit access or enforce mandatory security controls.  
 8. **Use Docker Compose**: Create a multi-container setup for testing web applications or networked environments.  
 9. **Clone Git Repositories**: Practice cloning repositories like Evil-WinRM to deploy tools within containers.
+
+
+--- 
+
+## Linux Networking (Attacker Perspective)
+
+### Network Configuration (Attacker Perspective)
+Understanding and managing network configuration is critical for penetration testers aiming to control traffic, exploit vulnerabilities, and gain deeper insights into target networks. By mastering Linux network tools, attackers can manipulate interfaces, analyze network traffic, and exploit weak configurations. 
+
+#### Key Concepts:
+1. **Network Interfaces**: Configure and exploit IPs, netmasks, and gateways to impersonate devices or pivot within a network.
+2. **Access Control**: Bypass NAC systems (e.g., DAC, MAC, RBAC) to gain unauthorized access or escalate privileges.
+3. **Traffic Monitoring**: Capture, analyze, and manipulate traffic using tools like Tcpdump or Wireshark for credentials or sensitive data.
+4. **Hardening Bypass**: Disable or exploit SELinux, AppArmor, or TCP wrappers to gain and maintain access.
+
+| **Topic**                | **Description**                                                                                                     | **Attacker’s Perspective**                                                                                       |
+|--------------------------|---------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------|
+| **Network Configuration** | Managing network interfaces, IP addresses, routes, and DNS settings to establish connectivity.                     | - Misconfigure or manipulate network settings to disrupt traffic or establish rogue connections.<br>- Enumerate interfaces and connections for reconnaissance. |
+| **Network Access Control (NAC)** | Policies that enforce device access restrictions to protect network resources.                                 | - Identify and bypass NAC policies, such as MAC, DAC, or RBAC.<br>- Exploit weak access controls for lateral movement or privilege escalation. |
+| **Discretionary Access Control (DAC)** | Access control based on resource ownership and user discretion.                                               | - Exploit misconfigured permissions by users to access sensitive resources.                                      |
+| **Mandatory Access Control (MAC)** | Access control based on predefined policies and security labels.                                               | - Bypass strict rules through privilege escalation or exploiting policy misconfigurations.                       |
+| **Role-Based Access Control (RBAC)** | Access control based on user roles and job responsibilities.                                                   | - Enumerate user roles to identify elevated privileges.<br>- Exploit weak role definitions to access restricted data. |
+| **Configuring Interfaces** | Setting up and modifying network interfaces, including IP addresses and routes.                                    | - Reconfigure interfaces for stealth or to bypass restrictions.<br>- Assign rogue IPs or manipulate routing tables for redirection. |
+| **Monitoring Network Traffic** | Capturing and analyzing traffic to identify vulnerabilities, threats, and sensitive data.                       | - Capture unencrypted credentials or tokens.<br>- Detect and exploit insecure or outdated protocols.             |
+| **Troubleshooting**       | Diagnosing and resolving network issues such as connectivity problems and DNS failures.                            | - Use troubleshooting tools (e.g., `ping`, `traceroute`) to map networks and identify weaknesses.<br>- Exploit misconfigured DNS servers or routing issues. |
+| **Hardening**             | Implementing security mechanisms (e.g., SELinux, AppArmor, TCP Wrappers) to protect network resources.             | - Identify and bypass hardening mechanisms.<br>- Exploit weak or default configurations for unauthorized access. |
+
+
+
+#### **Network Configuration**
+Network configuration involves managing interfaces, IPs, and routes to ensure proper communication between devices. 
+- **Example**: Using `ip addr` to display interface details for reconnaissance.
+
+#### **Network Access Control (NAC)**
+NAC enforces policies to grant or restrict device access based on compliance. 
+- **Example**: Exploiting weak RBAC policies to access restricted files.
+
+#### **Configuring Interfaces**
+Configuring interfaces includes assigning IPs, modifying netmasks, and setting gateways. 
+- **Example**: Using `sudo ifconfig eth0 192.168.1.2` to assign a rogue IP address for traffic redirection.
+
+#### **Monitoring Network Traffic**
+Monitoring captures packets to analyze traffic patterns and detect vulnerabilities. 
+- **Example**: Using `tcpdump -i eth0 port 80` to intercept HTTP traffic and capture credentials.
+
+#### **Troubleshooting**
+Troubleshooting involves tools to resolve network errors or performance issues. 
+- **Example**: Using `ping 8.8.8.8` to test connectivity to Google DNS or detect ICMP blocking.
+
+#### **Hardening**
+Hardening strengthens network defenses using tools like SELinux and TCP Wrappers. 
+- **Example**: Identifying misconfigured AppArmor profiles with `aa-status` for exploitation.
+
+
+
+
+
+### Network Configuration
+
+### Network Monitoring
+
+### Network Traffic Analysis
+
+### Network Intrusion Detection
+
+### Network Penetration Testing
+
+### Network Forensics
+
+### Network Defense
+
+### Remote Desktop Protocols in Linux
