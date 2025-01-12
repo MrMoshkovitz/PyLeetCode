@@ -281,3 +281,15 @@ For attackers, these capabilities enable reconnaissance of user accounts, privil
 - **Importance for Attackers**: Exploiting backup misconfigurations can provide access to sensitive data or backup systems themselves. Automated scripts and credentials in backup processes are often key targets.
 
 
+### File System Management 
+
+- **Core Functionality**: File system management in Linux involves organizing and maintaining data across storage devices, supporting various file systems like `ext4`, `XFS`, `NTFS`, and more.  
+- **Execution Context**: Tasks include partitioning, formatting, mounting, and unmounting file systems, along with managing permissions and inodes for files and directories.  
+- **Disk and Swap Management**: Disk partitions are managed using tools like `fdisk` or `gparted`, while swap space ensures smooth performance by offloading inactive memory pages.  
+- **Importance for Attackers**: Misconfigured mounts, insecure file permissions, or unused swap areas can provide opportunities for privilege escalation, persistence, or exfiltration.  
+
+#### Additional Attacker Scenarios:
+1. **Analyze Mounted Drives**: Use `mount` or `cat /etc/fstab` to identify writable partitions for storing malicious files.
+2. **Manipulate Swap Space**: Exploit sensitive data stored in unencrypted swap areas.
+3. **Bypass Permissions**: Use inode numbers from `ls -il` to reference hidden or inaccessible files directly.
+4. **Persistence**: Add custom mount entries to `/etc/fstab` for persistent access to drives.
