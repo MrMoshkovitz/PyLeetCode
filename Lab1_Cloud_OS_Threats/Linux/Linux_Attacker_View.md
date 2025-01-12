@@ -137,7 +137,6 @@
 
 ---
 
-# TODO: Current Location
 ## Workflow
 - **Hidden File Discovery**: Use `ls -la` to find configuration files or credentials hidden with a dot prefix.
 - **Target Permissions**: Analyze `ls -l` output to spot world-writable directories (`drwxrwxrwx`) or files owned by privileged users.
@@ -213,6 +212,29 @@
 
 
 
+
+
+
+## User Management
+User management is a core aspect of Linux system administration, encompassing tasks such as creating and managing users, assigning group memberships, and controlling user access.
+For attackers, these capabilities enable reconnaissance of user accounts, privilege escalation, and persistence. Manipulating user accounts or groups can provide access to sensitive files and directories or create backdoors for continued access.
+- **Core Functionality**: User management in Linux involves creating, modifying, and deleting user accounts, managing group memberships, and controlling user access.
+- **Execution Context**: Commands like sudo and su allow users to execute commands as other users, including root, enabling attackers to escalate privileges or access sensitive files.
+- **File and Directory Permissions**: User and group memberships determine access to files and directories, making user management essential for privilege escalation and lateral movement.
+- **Importance for Attackers**: Misconfigurations or weak passwords can be exploited to gain unauthorized access, create backdoor accounts, or modify existing accounts for persistence.
+
+
+
+
+
+
+
+
+
+
+
+
+--- 
 
 
 
@@ -449,7 +471,7 @@ The **Find**, **Updatedb/Locate**, and **Which** commands are essential for reco
 | | **2. `cat logs.txt \| sort -n`**: Sorts log entries numerically.                                     | Analyze data with numerical values, such as timestamps or IDs, for trends or inconsistencies.                        |
 
 
-#### Regex Filtering Commands - for Offensive Security
+#### Regex Filtering Commands 
 | **Command** | **Description** | **Attacker’s Perspective** |
 | **`grep`** | Searches for patterns in text using regular expressions. | Leverage RegEx to extract specific data, validate inputs, or locate misconfigurations in files. |
 | | **1. `grep -E "(my\|false)" /etc/passwd`**: Searches for lines containing "my" or "false". | Identify specific patterns in files for analysis or exploitation, e.g., misconfigured services or accounts. |
@@ -555,7 +577,7 @@ The **Find**, **Updatedb/Locate**, and **Which** commands are essential for reco
 ---
 
 
-### File Descriptors and Redirections
+### File Descriptors and Redirections Commands
 | **Command**            | **Description**  | **Attacker’s Perspective** |
 |------------------------|------------------|--------------------------|
 | **`>`**                   | Redirects STDOUT to a file, overwriting it.                                                      | Capture standard output for documentation or exfiltration purposes.                                                         |
@@ -585,4 +607,39 @@ The **Find**, **Updatedb/Locate**, and **Which** commands are essential for reco
 
 
 ---
+
+### User Management Commands
+
+| **Command**           | **Description**                                                                                   | **Attacker’s Perspective**                                                                                                   |
+|-----------------------|---------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
+| **`sudo`**            | Executes commands as another user, typically the superuser (root).                                | Exploit misconfigured `sudo` permissions to escalate privileges or access restricted files.                                |
+| | **1. `sudo cat /etc/shadow`**: View the shadow file for password hashes.                                                 | Extract password hashes for cracking or offline analysis.                                                                 |
+| | **2. `sudo -l`**: List the commands a user can run with `sudo`.                                                          | Identify commands that allow privilege escalation or unintended system access.                                             |
+| **`su`**              | Switches to another user account, requiring their password unless already root.                   | Gain access to a different user account for privilege escalation or lateral movement.                                      |
+| | **1. `su root`**: Switch to the root user.                                                                               | Exploit known credentials to gain full system control.                                                                    |
+| | **2. `su - hacker`**: Switch to the "hacker" user.                                                                               | Exploit known credentials to gain full system control.                                                                    |
+| **`useradd`**         | Creates a new user account.                                                                       | Add new backdoor accounts to maintain access.                                                                              |
+| | **1. `sudo useradd hacker`**: Create a new user account named "hacker".                                                 | Create a hidden or privileged user account for persistence.                                                               |
+| | **2. `sudo useradd -m -s /bin/bash attacker`**: Create a user with a home directory and Bash shell.                      | Establish a usable and persistent account for future exploitation.                                                        |
+| **`userdel`**         | Deletes a user account.                                                                           | Remove unwanted or compromised accounts to prevent detection.                                                             |
+| | **1. `sudo userdel -r hacker`**: Remove the user "hacker" and their home directory.                                      | Cleanup traces of created accounts after exploitation.                                                                    |
+| **`usermod`**         | Modifies user accounts.                                                                           | Change user privileges or group memberships for privilege escalation or persistence.                                       |
+| | **1. `sudo usermod -aG sudo hacker`**: Add the user "hacker" to the `sudo` group.                                        | Grant administrative privileges to a backdoor account.                                                                    |
+| | **2. `sudo usermod -L user`**: Lock the "user" account.                                                                 | Prevent legitimate users from accessing the system while maintaining control.                                             |
+| **`addgroup`**        | Creates a new group.                                                                              | Create custom groups to manage user permissions or mask activities.                                                       |
+| | **1. `sudo addgroup attackers`**: Add a group named "attackers".                                                        | Create hidden or suspicious groups for privilege escalation or control.                                                   |
+| **`delgroup`**        | Removes an existing group.                                                                        | Clean up created groups to erase traces of activity.                                                                      |
+| | **1. `sudo delgroup attackers`**: Remove the group "attackers".                                                         | Avoid detection by deleting unnecessary groups after use.                                                                 |
+| **`passwd`**          | Changes a user's password.                                                                        | Reset or manipulate user passwords for privilege escalation or denial of access.                                          |
+| | **1. `sudo passwd root`**: Change the root user’s password.                                                             | Regain access to root control if compromised or escalate privileges.                                                      |
+| | **2. `passwd hacker`**: Change the "hacker" user’s password.                                                            | Maintain control over a created or compromised user account.                                                              |
+| **`id`**              | Displays the user ID (UID) and group IDs (GIDs) of the current user.                              | Identify the current user context and privileges for further exploitation.                                                |
+| | **1. `id`**: Display the user and group information for the current session.                                            | Verify whether privilege escalation has succeeded.                                                                        |
+| **`whoami`**          | Displays the username of the current user.                                                       | Confirm the active user account during post-exploitation.                                                                 |
+| **`groups`**          | Lists all groups a user belongs to.                                                              | Identify groups with elevated privileges (e.g., `sudo`, `docker`) for privilege escalation.                               |
+| | **1. `groups hacker`**: List the groups the "hacker" user belongs to.                                                   | Check the privileges of a created or compromised account.                                                                 |
+| **`last`**            | Shows the login history of users.                                                                | Review user activity and identify potential accounts to target for attacks.                                               |
+| | **1. `last root`**: Display the login history for the root user.                                                        | Investigate root activity for vulnerabilities or configuration errors.                                                    |
+| **`finger`**          | Displays user information, including login names, directories, and shells.                       | Enumerate detailed information about users for reconnaissance.                                                           |
+| | **1. `finger hacker`**: View details of the "hacker" user.                                                              | Validate account creation or investigate compromised accounts.                                                            |
 
