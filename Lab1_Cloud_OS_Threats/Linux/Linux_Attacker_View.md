@@ -251,3 +251,11 @@ For attackers, these capabilities enable reconnaissance of user accounts, privil
 3. **Manual Installation**:
    - Download the necessary dependencies and configure Evil-WinRM for your target environment.
    - Install dependencies using `gem install winrm winrm-fs`.
+
+### Service and Process Management - Short Description
+
+- **Core Functionality**: Service and process management is a fundamental aspect of Linux administration, involving the monitoring, starting, stopping, and restarting of services and processes.
+- **Services (Daemons)**: Background programs, often ending in `d` (e.g., `sshd`), that perform system tasks or provide services without user interaction.
+- **Processes**: Active programs that can be managed using signals or commands to control their behavior (e.g., running, stopping, or killing them).
+- **Tools and Techniques**: Tools like `systemctl`, `ps`, `kill`, and `journalctl` help administrators and attackers manage services and processes effectively.
+- **Importance for Attackers**: Attackers leverage service and process management for persistence (starting malicious services), evasion (killing monitoring processes), and exploration (identifying running services for exploitation).

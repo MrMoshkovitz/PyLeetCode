@@ -71,6 +71,7 @@ This are directory navigation commands for attackers to understand the directory
 ---
 
 ### Network Commands
+This are network commands for attackers to understand the network, the interfaces, the routes, the TCP/UDP ports, the connections, the sockets, the web server, and the web server port.
 
 | **Command**           | **Description**                                         | **Attacker’s Perspective**                                                                                                             |
 |-----------------------|---------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------|
@@ -92,12 +93,31 @@ This are directory navigation commands for attackers to understand the directory
 ### Process Commands
 This are process commands for attackers to understand the process, the process ID, the process name, the process status, the process owner, the process group, the process start time, the process end time, the process memory usage, the process CPU usage, the process command line, and the process arguments.
 
+
 | **Command**   | **Description**                      | **Attacker’s Perspective**                                                                                           |
 |---------------|--------------------------------------|----------------------------------------------------------------------------------------------------------------------|
-| **`ps`**        | Displays process status.             | Identify running processes (especially root processes) or security tools to kill/inject.                             |
-| |**1. `ps aux`**: Show all processes with details.     | Quickly spot suspicious or high-privilege daemons.                                                                   |
-| |**2. `ps -ef`**: Display full-format listing.         | View parent-child relationships for possible process injection or hijacking.                                         |
-| **`kill / bg / jobs / fg`** | Process control commands. | Stop security software, hide malware in the background, or bring malicious processes to the foreground if needed.     |
+| **`ps`**      | Displays process status.             | Enumerate running processes for reconnaissance, identifying root or high-privilege processes to target.              |
+| | **1. `ps aux`**: Show all processes with details.     | Quickly identify resource-heavy or suspicious processes.                                                             |
+| | **2. `ps -ef`**: Display full-format listing.         | Analyze parent-child process relationships for injection or privilege escalation opportunities.                      |
+| | **3. `ps -eo pid,ppid,cmd,%mem,%cpu`**: Show custom fields for process monitoring. | Focus on high CPU/memory-consuming processes for potential exploits or disruptions.                                 |
+| | **4. `ps -C sshd`**: Show specific processes by name. | Locate critical services like SSH for monitoring or attack.                                                          |
+| **`top` / `htop`** | Monitors system resources in real-time. | Track high-priority targets or identify suspicious system activity to blend in with.                                 |
+| | **1. `htop`**: Interactive process viewer.             | Provides easier navigation and filtering for live reconnaissance.                                                    |
+| | **2. `top -p <PID>`**: Monitor specific processes by PID. | Focus on particular processes for detailed observation.                                                              |
+| **`kill`**     | Sends signals to processes.         | Terminate security tools or restart malicious processes stealthily.                                                  |
+| | **1. `kill -9 <PID>`**: Forcefully kill a process.   | Stop critical processes like IDS or monitoring daemons.                                                              |
+| | **2. `kill -SIGSTOP <PID>`**: Suspend a process.     | Temporarily halt processes without leaving traces.                                                                   |
+| **`pkill`**    | Kills processes by name.            | Stop all instances of a target process (e.g., antivirus or SSH).                                                     |
+| | **1. `pkill -f sshd`**: Kill all SSH daemon processes. | Disrupt remote access services or replace with malicious counterparts.                                               |
+| **`jobs`**     | Lists background jobs.              | Monitor and manage active tasks during multi-step operations.                                                        |
+| **`bg`**       | Resumes a stopped process in the background. | Maintain stealth by running tasks in the background while continuing other activities.                               |
+| **`fg`**       | Brings a background process to the foreground. | Regain control of critical tasks for interaction or monitoring.                                                      |
+| **`nice / renice`** | Adjusts process priority.       | Reduce priority of security tools or increase priority of malicious processes for stealth.                           |
+| | **1. `renice -n -5 <PID>`**: Increase priority of a process. | Ensure uninterrupted execution of payloads or critical tools.                                                        |
+| | **2. `renice -n 10 <PID>`**: Decrease priority of a process. | Throttle performance of monitoring tools or competing processes.                                                     |
+| **`strace`**   | Traces system calls and signals.    | Monitor process behavior, including file and network operations, for reconnaissance or evasion.                     |
+| | **1. `strace -p <PID>`**: Attach to a running process. | Investigate activity of target processes to identify weaknesses or gain insights into their operation.               |
+
 
 ---
 
@@ -133,10 +153,41 @@ This are privilege escalation commands for attackers to understand the privilege
 
 ### System Management Commands
 This are system management commands for attackers to understand the system management, the system management user, the system management group, the system management start time, the system management end time, the system management memory usage, the system management CPU usage, the system management command line, and the system management arguments.
-| **Command**    | **Description**                             | **Attacker’s Perspective**                                                                                  |
-|----------------|---------------------------------------------|-------------------------------------------------------------------------------------------------------------|
-| **`systemctl`**  | Manages services and system states.         | Start/stop or enable malicious services at boot; disable or mask security tools.                            |
-| **`journalctl`** | Queries systemd logs.                       | Review, tamper, or clear logs to hide footprints of exploitation or lateral movement.                       |
+| **Command**       | **Description**                             | **Attacker’s Perspective**                                                                                  |
+|-------------------|---------------------------------------------|-------------------------------------------------------------------------------------------------------------|
+| **`systemctl`**   | Manages services and system states.         | Start/stop malicious services or disable security tools for persistence or evasion.                        |
+| | **1. `systemctl start <service>`**: Starts a service.           | Activate legitimate or malicious services to establish persistence.                                         |
+| | **2. `systemctl stop <service>`**: Stops a service.             | Disable critical services to disrupt system operations or security monitoring.                              |
+| | **3. `systemctl enable <service>`**: Enables a service at boot. | Ensure persistence by auto-starting malicious services.                                                     |
+| | **4. `systemctl mask <service>`**: Masks a service.             | Prevent critical services like firewalls or security tools from being started.                              |
+| | **5. `systemctl list-units --type=service`**: Lists active services. | Identify running services for reconnaissance or exploitation.                                               |
+| **`journalctl`**  | Queries systemd logs.                       | Review logs for reconnaissance, tamper logs to hide malicious activity, or analyze security events.         |
+| | **1. `journalctl -u <service>`**: Shows logs for a specific service. | Investigate service logs for configuration errors or vulnerabilities.                                       |
+| | **2. `journalctl --since "1 hour ago"`**: View recent logs.    | Analyze recent events for signs of attack detection or system changes.                                      |
+| **`uptime`**      | Displays system uptime.                     | Check how long the system has been running to gauge activity patterns or plan reboots.                      |
+| **`dmesg`**       | Prints kernel messages.                     | Analyze kernel logs for hardware issues, driver exploits, or evidence of tampering.                         |
+| | **1. `dmesg | grep error`**: Filters kernel errors.            | Locate potential kernel-level vulnerabilities or misconfigurations.                                         |
+| **`uname`**       | Displays system information.                | Gather OS details for selecting tailored exploits or privilege escalation methods.                          |
+| | **1. `uname -a`**: Displays all system information.            | Identify kernel version, architecture, and hostname for targeted attacks.                                   |
+| | **2. `uname -r`**: Shows the kernel release version.           | Pinpoint kernel vulnerabilities for exploitation.                                                           |
+| **`shutdown` / `reboot`** | Shuts down or restarts the system.  | Force system reboots to disrupt incident response or test persistence mechanisms.                           |
+| **`who` / `w`**   | Displays logged-in users.                   | Identify active users and potential targets for credential harvesting or social engineering.                |
+| | **1. `who`**: Lists current users.                            | Check for admin accounts or identify idle sessions for exploitation.                                        |
+| | **2. `w`**: Shows user activity.                              | Monitor user activity to avoid detection during operations.                                                 |
+
+### Service Management Commands
+This are service management commands for attackers to understand the service management, the service management user, the service management group, the service management start time, the service management end time, the service management memory usage, the service management CPU usage, the service management command line, and the service management arguments.
+| **Command**              | **Description**                                                                                       | **Attacker’s Perspective**                                                                                               |
+|--------------------------|-------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------|
+| **`service`**            | Manages services (SysVinit).                                                                          | Start, stop, or restart services for reconnaissance, disruption, or persistence.                                       |
+| | **1. `service <service> start`**: Starts a service.                                      | Activate legitimate or malicious services.                                                                             |
+| | **2. `service <service> stop`**: Stops a service.                                        | Disable critical services like firewalls or IDS.                                                                       |
+| **`chkconfig`**          | Configures services for startup.                                                                      | Enable or disable services to manipulate startup behavior.                                                             |
+| | **1. `chkconfig <service> on`**: Enables a service at boot.                              | Ensure persistence by enabling malicious services.                                                                     |
+| **`update-rc.d`**        | Updates SysVinit scripts.                                                                             | Modify startup scripts to add persistence mechanisms or disable security services.                                     |
+| **`netstat`**            | Displays network connections, routing tables, and port usage.                                         | Identify open ports, active connections, and potential backdoors or C2 channels.                                      |
+| | **1. `netstat -tuln`**: Lists listening TCP/UDP ports.                                   | Locate services running on non-default ports for exploitation or reconnaissance.                                       |
+| | **2. `netstat -ano`**: Shows active connections with associated PIDs.                   | Map processes to network activity for identifying critical targets.                                                    |
 
 ---
 
@@ -417,8 +468,7 @@ This are user management commands for attackers to understand the user managemen
 
 
 ### Package Management Commands
-
-This comprehensive table provides package management commands for attackers to understand system usage, user privileges, group permissions, memory and CPU consumption, and command-line arguments for various package management tasks. These commands highlight the critical operations and opportunities for exploitation.
+This are package management commands for attackers to understand the package management, the package management user, the package management group, the package management start time, the package management end time, the package management memory usage, the package management CPU usage, the package management command line, and the package management arguments.
 
 | **Command**              | **Description**                                                                                       | **Attacker’s Perspective**                                                                                               |
 |--------------------------|-------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------|
@@ -458,3 +508,5 @@ This comprehensive table provides package management commands for attackers to u
 | **`tar`**                | Archives and compresses files or directories.                                                        | Package tools or data for easier transfer or deployment.                                                               |
 
 ---
+
+
