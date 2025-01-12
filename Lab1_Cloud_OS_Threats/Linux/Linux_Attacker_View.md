@@ -266,3 +266,9 @@ For attackers, these capabilities enable reconnaissance of user accounts, privil
 - **Execution Tools**: Tools like `systemd` and `cron` allow administrators to schedule tasks based on time intervals or specific events.  
 - **Key Use Cases**: Tasks include software updates, database maintenance, backups, and executing scripts at defined intervals.  
 - **Importance for Attackers**: Misconfigured or overly permissive scheduling systems can be exploited to execute malicious scripts, maintain persistence, or disrupt critical services.  
+
+### Network Services
+- **Core Importance**: Network services in Linux are fundamental for enabling communication between systems, transferring files, managing remote systems, and hosting applications.  
+- **Service Interaction**: Knowledge of network services such as SSH, NFS, web servers, and VPNs is crucial for system administrators and penetration testers to manage and secure systems effectively or identify vulnerabilities.  
+- **Penetration Testing**: Attackers exploit misconfigured or outdated network services to gain unauthorized access, exfiltrate data, or escalate privileges.
+
