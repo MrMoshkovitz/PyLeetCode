@@ -164,7 +164,50 @@
 | **`2>&1`**             | Redirects STDERR to the same destination as STDOUT. | Combine both outputs for comprehensive logging or analysis. |
 
 
+### File Permissions and Ownership
 
+| **Character**        | **Description**                             | **Attacker’s Perspective**                                                                                         |
+|----------------------|---------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
+| **First Character**  | File Type                                   | Identify the type of file for reconnaissance or manipulation.                                                      |
+| | **`d`**            | Directory                                   | Recognize directories for navigation, enumeration, and storing payloads.                                           |
+| | **`-`**            | Regular File                                | Identify files for reconnaissance, manipulation, or exfiltration.                                                  |
+| | **`l`**            | Symbolic Link                               | Trace symbolic links to discover underlying files or directories for exploitation.                                  |
+| | **`c`**            | Character Device                            | Interact with hardware or system processes for low-level exploitation.                                             |
+| | **`b`**            | Block Device                                | Access and manipulate storage devices for deeper system control.                                                   |
+| | **`s`**            | Socket                                      | Locate and exploit interprocess communication mechanisms.                                                          |
+| | **`p`**            | Named Pipe (FIFO)                          | Intercept or manipulate interprocess communication for data exfiltration or privilege escalation.                   |
+| **Second to Fourth Characters (`rwx` for Owner)** | Permissions for the file owner.           | Determine what the owner can do with the file (read, write, execute).                                              |
+| | **`r`**            | Read permission                             | The owner can read the file's contents. Useful for accessing sensitive data or configurations.                      |
+| | **`w`**            | Write permission                            | The owner can modify the file. Look for writable sensitive files for tampering or privilege escalation.             |
+| | **`x`**            | Execute permission                          | The owner can execute the file. Check for executable scripts or binaries for privilege escalation or payload execution. |
+| | **`-`**            | No permission                               | The owner does not have the specific permission.                                                                   |
+| **Fifth to Seventh Characters (`rwx` for Group)** | Permissions for the group.                 | Identify what members of the file’s group can do with the file.                                                    |
+| | **`r`**            | Read permission                             | Group members can read the file's contents. Useful for enumerating shared group files or configurations.            |
+| | **`w`**            | Write permission                            | Group members can modify the file. Exploit shared writable files for lateral movement or privilege escalation.       |
+| | **`x`**            | Execute permission                          | Group members can execute the file. Target group-accessible scripts or binaries for exploitation.                   |
+| | **`-`**            | No permission                               | Group members lack specific permissions.                                                                           |
+| **Eighth to Tenth Characters (`rwx` for Others)** | Permissions for all other users.          | Identify what any user on the system can do with the file.                                                         |
+| | **`r`**            | Read permission                             | Anyone can read the file's contents. Look for sensitive files accessible by all users.                             |
+| | **`w`**            | Write permission                            | Anyone can modify the file. Exploit globally writable files for tampering or malicious activities.                  |
+| | **`x`**            | Execute permission                          | Anyone can execute the file. Useful for privilege escalation via publicly accessible binaries or scripts.           |
+| | **`-`**            | No permission                               | Other users lack specific permissions.                                                                             |
+| **Special Permission Characters** | SUID, SGID, Sticky Bits           | Recognize special permissions for privilege escalation or persistence.                                              |
+| | **`s` (SUID)**     | Set User ID                                 | File runs with the owner’s privileges. Exploit SUID binaries to execute commands as the file’s owner, often root.   |
+| | **`s` (SGID)**     | Set Group ID                                | File runs with the group’s privileges. Exploit SGID binaries or directories for lateral movement or privilege escalation. |
+| | **`t`**            | Sticky Bit                                  | Protects files in shared directories from deletion by non-owners. Bypass sticky bit protections for persistence or disruption. |
+| | **`T`**            | Sticky Bit (No Execute)                     | Same as sticky bit but without execute permission for others. Exploit directories without execute permissions for stealth. |
+| **Hard Links Count** | Number of hard links to the file or directory. | Use this to understand the file’s linkage and find hidden or duplicate paths.                                       |
+| **User Ownership**   | The user that owns the file.                | Determine which user owns the file, often revealing privileged accounts for targeted exploitation.                  |
+| **Group Ownership**  | The group that owns the file.               | Identify groups with elevated permissions for lateral movement or privilege escalation.                             |
+| **File Size**        | Size of the file in bytes.                  | Use this to identify potential payloads, sensitive data, or unexpected files.                                       |
+| **Last Modified Date** | Timestamp of the last modification.        | Analyze modification dates to identify recent changes or suspicious activity.                                       |
+
+#### Examples of Permissions Lines and Their Explanation
+| **Permissions Line**              | **Explanation**                                                                                                  | **Attacker’s Perspective**                                                                                         |
+|-----------------------------------|------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
+| **`-rw-r--r-- 1 root root 1641 May  4 23:42 /etc/passwd`** | - **File Type**: Regular file (`-`)<br>- **Owner Permissions**: Read and write (`rw-`)<br>- **Group Permissions**: Read-only (`r--`)<br>- **Others**: Read-only (`r--`) | - Readable by all users, making it accessible for enumeration to identify user accounts.<br>- Modification restricted to root, reducing direct tampering risk. |
+| **`-rwxr-xr-x 1 cry0l1t3 htbteam 3548 Jan 12 12:30 /home/user/script.sh`** | - **File Type**: Regular file (`-`)<br>- **Owner Permissions**: Full access (read, write, execute: `rwx`)<br>- **Group Permissions**: Read and execute (`r-x`)<br>- **Others**: Read and execute (`r-x`) | - Publicly executable script: investigate its contents for vulnerabilities or use it to execute commands.<br>- Writable by owner, which may allow modifications for persistence. |
+| **`drwxrwxr-t 3 cry0l1t3 htbteam 4096 Jan 12 12:30 /tmp/shared`** | - **File Type**: Directory (`d`)<br>- **Owner Permissions**: Full access (`rwx`)<br>- **Group Permissions**: Full access (`rwx`)<br>- **Others**: Read, write, and sticky bit (`r-t`) | - Shared directory with sticky bit: prevents deletion of files by non-owners.<br>- Writable by all users: potential space for payloads or temporary file staging. |
 
 
 
@@ -541,4 +584,5 @@ The **Find**, **Updatedb/Locate**, and **Which** commands are essential for reco
 | **`find /etc/ -name *.conf 2>/dev/null \| grep systemd \| wc -l`** | Filters output for lines containing "systemd". | Narrow results to target specific configurations or files of interest <br>-Identify, filter, and quantify specific results in one step. |
 
 
+---
 
