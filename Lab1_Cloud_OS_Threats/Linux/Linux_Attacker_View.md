@@ -476,6 +476,8 @@ The **Find**, **Updatedb/Locate**, and **Which** commands are essential for reco
 | | **2. `chmod u+s /path/to/binary`**: Sets the SUID bit on a binary.                        | Create or exploit SUID binaries to execute commands as the file owner, often root, for privilege escalation.        |
 | | **3. `chmod -x /path/to/script`**: Removes execute permissions from a script.            | Disable legitimate scripts temporarily to disrupt system functions or investigations.                              |
 | | **4. `chmod o-w /etc/passwd`**: Removes write permissions for others on the passwd file. | Prevent unauthorized modifications by other users, maintaining control over sensitive files.                       |
+| | **5. `chmod g+rwx /path/to/dir`**: Grants group read, write, and execute permissions on a directory. | Share directories with controlled access among specific users.                                                     |
+| | **6. `chmod a+t /path/to/dir`**: Sets the sticky bit on a directory.                     | Prevent non-owners from deleting or renaming files in shared directories, ensuring persistence of important files.  |
 | **`chown`**            | Change file or directory ownership.                               | Modify ownership to obscure traces or enable malicious activities under a different user context.                   |
 | | **1. `chown root:root /path/to/file`**: Changes ownership to root user and group.         | Set files to appear legitimate or gain control over privileged files.                                              |
 | | **2. `chown hacker:staff /path/to/binary`**: Changes ownership to the attacker’s user.    | Take ownership of critical binaries to ensure exclusive control.                                                   |
@@ -490,6 +492,22 @@ The **Find**, **Updatedb/Locate**, and **Which** commands are essential for reco
 | | **1. `find / -perm -4000 2>/dev/null`**: Finds all files with the SUID bit set.          | Identify potential targets for privilege escalation.                                                                |
 | | **2. `find /var/www/ -type f -perm 777 2>/dev/null`**: Finds world-writable files in the web root. | Exploit writable files for webshells or data injection.                                                             |
 | | **3. `find /etc/ -type f -user root -perm -o+w 2>/dev/null`**: Finds files writable by others but owned by root. | Locate critical files with insecure permissions for tampering or exploitation.                                       |
+| | **4. `find /tmp -type f -name "*.sh" -perm -u+x`**: Finds executable shell scripts in the `/tmp` directory. | Identify temporary scripts that could be leveraged for privilege escalation or persistence.                        |
+| **`getfacl`**          | View Access Control List (ACL) for files and directories.        | Identify additional permissions set for specific users or groups.                                                   |
+| | **1. `getfacl /path/to/file`**: Displays ACL for a file.                                 | Analyze ACLs to discover over-privileged users or exploitable configurations.                                        |
+| **`setfacl`**          | Modify Access Control List (ACL) for files and directories.      | Add or remove permissions for specific users or groups.                                                             |
+| | **1. `setfacl -m u:attacker:rwx /path/to/file`**: Grants read, write, and execute permissions to the attacker. | Establish direct access to files without modifying global permissions.                                               |
+| | **2. `setfacl -x u:targetuser /path/to/file`**: Removes specific user's access to a file. | Disrupt legitimate access to secure persistence.                                                                     |
+| **`stat`**             | Display detailed file information, including permissions.        | Gather detailed metadata on files, such as ownership, size, and access times.                                       |
+| | **1. `stat /etc/passwd`**: Displays ownership, permissions, and timestamps for the passwd file. | Identify sensitive files and analyze for privilege escalation vectors.                                              |
+| **`tune2fs`**          | Adjust filesystem settings, including reserved blocks.           | Manipulate reserved space or other filesystem settings for persistence or disruption.                               |
+| | **1. `tune2fs -l /dev/sda1`**: Lists filesystem information, including owner and reserved blocks. | Identify filesystem settings that can be exploited or manipulated.                                                  |
+| **`touch`**            | Create or update timestamps of files.                            | Quickly generate or modify files to manipulate access times and obscure activity.                                    |
+| | **1. `touch /tmp/newfile`**: Creates an empty file.                                      | Create placeholder files for staging or persistence.                                                                |
+| | **2. `touch -t 202201010101 /path/to/file`**: Sets a file's timestamp to a specific time. | Obfuscate activity by backdating or forward-dating files.                                                           |
+| **`sticky bit`**       | Sets sticky bit on directories to secure file deletion.          | Prevent unauthorized deletion of files in shared directories.                                                       |
+| | **1. `chmod +t /path/to/dir`**: Adds a sticky bit to a directory.                       | Protect critical files from being deleted by non-owners.                                                            |
+| | **2. `ls -ld /tmp`**: Verifies if the sticky bit is set (indicated by `t`).             | Ensure shared directories like `/tmp` are secure for multi-user environments.                                       |
 
 ---
 
