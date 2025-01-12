@@ -666,7 +666,6 @@ This are containerization commands for attackers to understand the containerizat
 
 
 ### Linux Network Configuration Commands (Attacker Perspective)
-
 1. **Configuration Commands**: Directly enable interface setup and routing manipulation.
 2. **Monitoring and Troubleshooting**: Tools like `tcpdump` and `ping` offer insights into traffic and connectivity.
 3. **Access Control and Hardening**: Commands like `getenforce` and editing `/etc/hosts.allow` demonstrate real-worl
@@ -711,3 +710,56 @@ This are containerization commands for attackers to understand the containerizat
 | | **1. `vim /etc/hosts.allow`**: Adds allowed hosts to access specific services.                                                                                       | Add attacker IPs to bypass access controls.                                                                                                                                  |
 | | **2. `vim /etc/hosts.deny`**: Blocks access to specified services for certain hosts.                                                                                 | Block legitimate users to disrupt monitoring or defenses.                                                                                                                    |
 
+
+
+---
+
+### General Commands for Remote Desktop Protocols
+1. **General Commands for Remote Desktop Protocols**
+2. **XServer (X11)**
+3. **XDMCP**
+4. **VNC (Virtual Network Computing)**
+
+| **Command/Tool**                 | **Description**                                                                                  | **Attacker’s Perspective**                                                                                           |
+|----------------------------------|--------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------|
+| **`xauth`**                      | Manages X11 authentication tokens.                                                              | Bypass authentication to gain access to X11 sessions.                                                               |
+| **`tcpdump port <port>`**         | Captures network traffic on specific ports (e.g., 5900 for VNC or 6000 for X11).                | Intercept unencrypted remote desktop traffic.                                                                        |
+| **`wireshark`**                  | Analyzes captured packets with a GUI.                                                           | Inspect captured VNC or X11 sessions for sensitive data.                                                             |
+| **`ssh -Y <user>@<host>`**        | Enables trusted X11 forwarding.                                                                | Tunnel X11 sessions while preserving user trust and avoiding detection.                                              |
+| **`chmod +x ~/.vnc/xstartup`**    | Assigns executable rights to the VNC session startup file.                                      | Exploit misconfigured permissions for unauthorized modifications or persistence.                                      |
+
+
+
+#### XServer (X11)
+This is the XServer (X11) commands for attackers to understand the XServer (X11), the XServer (X11) user, the XServer (X11) group, the XServer (X11) start time, the XServer (X11) end time, the XServer (X11) memory usage, the XServer (X11) CPU usage, the XServer (X11) command line, and the XServer (X11) arguments.
+| **Command/Tool**             | **Description**                                                                                     | **Attacker’s Perspective**                                                                                            |
+|------------------------------|-----------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
+| **`cat /etc/ssh/sshd_config`** | Displays the SSH configuration file.                                                              | Verify if X11 forwarding is enabled to exploit unencrypted X11 sessions.                                             |
+| | **`grep X11Forwarding`**: Filters the SSH configuration for X11 settings.                                                       | Check if X11 forwarding is allowed for exploiting sessions.                                                          |
+| **`ssh -X <user>@<host>`**    | Starts an SSH session with X11 forwarding enabled.                                                | Tunnel X11 sessions through SSH to capture graphical output securely.                                                |
+| **`xwd`**                     | Captures window dumps from X11 sessions.                                                          | Extract screenshots of active sessions on vulnerable systems.                                                        |
+| **`xgrabsc`**                 | Captures screen content from X11 sessions.                                                        | Spy on user activity or capture sensitive information displayed on screens.                                          |
+
+
+### XDMCP
+This is the XDMCP commands for attackers to understand the XDMCP, the XDMCP user, the XDMCP group, the XDMCP start time, the XDMCP end time, the XDMCP memory usage, the XDMCP CPU usage, the XDMCP command line, and the XDMCP arguments.
+| **Command/Tool**             | **Description**                                                                                     | **Attacker’s Perspective**                                                                                            |
+|------------------------------|-----------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
+| **`nmap -p 177 <target>`**    | Scans for open XDMCP ports on a target system.                                                    | Identify XDMCP-enabled systems for potential man-in-the-middle attacks.                                              |
+| **`xwininfo`**                | Displays information about X11 windows.                                                          | Gather details about active windows to identify sensitive applications.                                              |
+| **`xdpyinfo`**                | Displays X11 display server information.                                                         | Enumerate display capabilities and configurations for further exploitation.                                           |
+
+
+
+### VNC (Virtual Network Computing)
+This is the VNC (Virtual Network Computing) commands for attackers to understand the VNC (Virtual Network Computing), the VNC (Virtual Network Computing) user, the VNC (Virtual Network Computing) group, the VNC (Virtual Network Computing) start time, the VNC (Virtual Network Computing) end time, the VNC (Virtual Network Computing) memory usage, the VNC (Virtual Network Computing) CPU usage, the VNC (Virtual Network Computing) command line, and the VNC (Virtual Network Computing) arguments.
+| **Command/Tool**                  | **Description**                                                                                  | **Attacker’s Perspective**                                                                                           |
+|-----------------------------------|--------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------|
+| **`nmap -p 5900-5903 <target>`**  | Scans for open VNC ports.                                                                        | Identify VNC servers running on common ports.                                                                        |
+| **`vncpasswd`**                   | Sets a password for VNC connections.                                                            | Replace or brute-force VNC passwords for unauthorized access.                                                        |
+| **`vncserver`**                   | Starts a VNC server session.                                                                    | Deploy a rogue VNC server to capture user activity.                                                                  |
+| **`xtightvncviewer`**             | Connects to a VNC server.                                                                       | Use stolen credentials to access remote desktops.                                                                    |
+| **`ssh -L 5901:127.0.0.1:5901`**  | Creates an SSH tunnel for VNC traffic.                                                          | Tunnel VNC traffic for stealthy communication or to bypass firewalls.                                                |
+| **`vncserver -list`**             | Lists active VNC sessions with ports and process IDs.                                           | Identify existing sessions for hijacking or enumeration.                                                             |
+
+---

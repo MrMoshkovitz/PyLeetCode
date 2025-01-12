@@ -354,9 +354,10 @@ NAC enforces policies to grant or restrict device access based on compliance.
 Configuring interfaces includes assigning IPs, modifying netmasks, and setting gateways. 
 - **Example**: Using `sudo ifconfig eth0 192.168.1.2` to assign a rogue IP address for traffic redirection.
 
-#### **Monitoring Network Traffic**
+#### **NetworkMonitoring & Network Traffic**
 Monitoring captures packets to analyze traffic patterns and detect vulnerabilities. 
 - **Example**: Using `tcpdump -i eth0 port 80` to intercept HTTP traffic and capture credentials.
+
 
 #### **Troubleshooting**
 Troubleshooting involves tools to resolve network errors or performance issues. 
@@ -367,15 +368,6 @@ Hardening strengthens network defenses using tools like SELinux and TCP Wrappers
 - **Example**: Identifying misconfigured AppArmor profiles with `aa-status` for exploitation.
 
 
-
-
-
-### Network Configuration
-
-### Network Monitoring
-
-### Network Traffic Analysis
-
 ### Network Intrusion Detection
 
 ### Network Penetration Testing
@@ -384,4 +376,21 @@ Hardening strengthens network defenses using tools like SELinux and TCP Wrappers
 
 ### Network Defense
 
-### Remote Desktop Protocols in Linux
+### Remote Desktop Protocols in Linux (Attacker Perspective)
+Remote desktop protocols allow graphical remote access to systems, commonly used for remote administration and troubleshooting. Attackers can leverage these protocols to gain unauthorized access, capture sensitive data, or manipulate system settings.
+
+#### XServer (X11)
+XServer facilitates graphical user interfaces on Unix/Linux systems. It uses TCP ports (6001-6009) for communication. Although X11 offers network transparency, it lacks encryption, making it vulnerable to attacks. X11 sessions can be tunneled through SSH for security.
+
+- **Attacker's Perspective**: Exploit unencrypted X11 sessions to capture keystrokes, screenshots, or inject commands remotely.
+
+#### XDMCP
+XDMCP enables remote X Window sessions over UDP port 177. It is insecure due to a lack of encryption, making it susceptible to man-in-the-middle attacks.
+
+- **Attacker's Perspective**: Intercept XDMCP traffic to gain unauthorized access to remote graphical interfaces.
+
+#### VNC (Virtual Network Computing)
+VNC allows remote desktop sharing based on the RFB protocol. It provides encryption and authentication but can be exploited if misconfigured.
+
+- **Attacker's Perspective**: Exploit weak passwords, intercept traffic, or brute-force VNC services to gain remote desktop control.
+
