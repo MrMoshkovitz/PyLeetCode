@@ -209,7 +209,7 @@
 | **`drwxrwxr-t 3 cry0l1t3 htbteam 4096 Jan 12 12:30 /tmp/shared`** | - **File Type**: Directory (`d`)<br>- **Owner Permissions**: Full access (`rwx`)<br>- **Group Permissions**: Full access (`rwx`)<br>- **Others**: Read, write, and sticky bit (`r-t`) | - Shared directory with sticky bit: prevents deletion of files by non-owners.<br>- Writable by all users: potential space for payloads or temporary file staging. |
 
 
-
+---
 
 
 
@@ -223,12 +223,14 @@ For attackers, these capabilities enable reconnaissance of user accounts, privil
 - **File and Directory Permissions**: User and group memberships determine access to files and directories, making user management essential for privilege escalation and lateral movement.
 - **Importance for Attackers**: Misconfigurations or weak passwords can be exploited to gain unauthorized access, create backdoor accounts, or modify existing accounts for persistence.
 
+---
 
 ### Package Management
 - **Core Functionality**: Package management in Linux involves installing, updating, and removing software packages, along with managing their dependencies.  
 - **Execution Context**: Tools like `apt`, `dpkg`, and `snap` handle package operations, ensuring consistent installations and efficient updates.  
 - **Dependency Resolution**: Package managers automate the resolution of dependencies, retrieving required libraries or binaries during installation.  
 - **Importance for Attackers**: Attackers leverage package managers to install tools, maintain persistence, and exploit vulnerable packages. Misconfigurations or outdated packages are often targeted for exploitation.  
+
 
 ### Practical Exercise: Evil-WinRM Installation
 
@@ -252,7 +254,9 @@ For attackers, these capabilities enable reconnaissance of user accounts, privil
    - Download the necessary dependencies and configure Evil-WinRM for your target environment.
    - Install dependencies using `gem install winrm winrm-fs`.
 
-### Service and Process Management - Short Description
+
+---
+### Service and Process Management
 
 - **Core Functionality**: Service and process management is a fundamental aspect of Linux administration, involving the monitoring, starting, stopping, and restarting of services and processes.
 - **Services (Daemons)**: Background programs, often ending in `d` (e.g., `sshd`), that perform system tasks or provide services without user interaction.
@@ -260,6 +264,7 @@ For attackers, these capabilities enable reconnaissance of user accounts, privil
 - **Tools and Techniques**: Tools like `systemctl`, `ps`, `kill`, and `journalctl` help administrators and attackers manage services and processes effectively.
 - **Importance for Attackers**: Attackers leverage service and process management for persistence (starting malicious services), evasion (killing monitoring processes), and exploration (identifying running services for exploitation).
 
+---
 
 ### Task Scheduling:
 - **Core Functionality**: Task scheduling in Linux automates repetitive tasks, ensuring consistency and efficiency without manual intervention.  
@@ -267,11 +272,14 @@ For attackers, these capabilities enable reconnaissance of user accounts, privil
 - **Key Use Cases**: Tasks include software updates, database maintenance, backups, and executing scripts at defined intervals.  
 - **Importance for Attackers**: Misconfigured or overly permissive scheduling systems can be exploited to execute malicious scripts, maintain persistence, or disrupt critical services.  
 
+---
+
 ### Network Services
 - **Core Importance**: Network services in Linux are fundamental for enabling communication between systems, transferring files, managing remote systems, and hosting applications.  
 - **Service Interaction**: Knowledge of network services such as SSH, NFS, web servers, and VPNs is crucial for system administrators and penetration testers to manage and secure systems effectively or identify vulnerabilities.  
 - **Penetration Testing**: Attackers exploit misconfigured or outdated network services to gain unauthorized access, exfiltrate data, or escalate privileges.
 
+---
 
 ### Backup and Restore 
 - **Core Functionality**: Linux systems provide robust tools for backing up and restoring data, ensuring data protection, encryption, and ease of recovery.  
@@ -280,6 +288,7 @@ For attackers, these capabilities enable reconnaissance of user accounts, privil
 - **Automation**: Tools like `cron` enable automated synchronization, ensuring regular and consistent backups with minimal manual intervention.  
 - **Importance for Attackers**: Exploiting backup misconfigurations can provide access to sensitive data or backup systems themselves. Automated scripts and credentials in backup processes are often key targets.
 
+--- 
 
 ### File System Management 
 
@@ -294,6 +303,7 @@ For attackers, these capabilities enable reconnaissance of user accounts, privil
 3. **Bypass Permissions**: Use inode numbers from `ls -il` to reference hidden or inaccessible files directly.
 4. **Persistence**: Add custom mount entries to `/etc/fstab` for persistent access to drives.
 
+---
 
 ### Containerization
 
@@ -346,15 +356,18 @@ Understanding and managing network configuration is critical for penetration tes
 Network configuration involves managing interfaces, IPs, and routes to ensure proper communication between devices. 
 - **Example**: Using `ip addr` to display interface details for reconnaissance.
 
+
 #### **Network Access Control (NAC)**
 NAC enforces policies to grant or restrict device access based on compliance. 
 - **Example**: Exploiting weak RBAC policies to access restricted files.
+
 
 #### **Configuring Interfaces**
 Configuring interfaces includes assigning IPs, modifying netmasks, and setting gateways. 
 - **Example**: Using `sudo ifconfig eth0 192.168.1.2` to assign a rogue IP address for traffic redirection.
 
-#### **NetworkMonitoring & Network Traffic**
+
+#### **Network Monitoring & Network Traffic**
 Monitoring captures packets to analyze traffic patterns and detect vulnerabilities. 
 - **Example**: Using `tcpdump -i eth0 port 80` to intercept HTTP traffic and capture credentials.
 
@@ -363,33 +376,52 @@ Monitoring captures packets to analyze traffic patterns and detect vulnerabiliti
 Troubleshooting involves tools to resolve network errors or performance issues. 
 - **Example**: Using `ping 8.8.8.8` to test connectivity to Google DNS or detect ICMP blocking.
 
+
 #### **Hardening**
 Hardening strengthens network defenses using tools like SELinux and TCP Wrappers. 
 - **Example**: Identifying misconfigured AppArmor profiles with `aa-status` for exploitation.
 
 
-### Network Intrusion Detection
 
-### Network Penetration Testing
+### **Network Intrusion Detection**  
+Intrusion Detection Systems (IDS) monitor network traffic to identify suspicious activities and potential security breaches. They detect and alert about unauthorized access or anomalous behavior. IDS can be signature-based (detect known patterns) or anomaly-based (detect deviations from normal behavior).
+- **Attacker’s Perspective**: Evade detection by analyzing IDS rules and generating stealthy traffic patterns.
 
-### Network Forensics
 
-### Network Defense
+### **Network Reconnaissance**  
+Network reconnaissance involves gathering information about a target network, including IP addresses, services, and vulnerabilities. This includes scanning networks, identifying open ports, and gathering information about the target's infrastructure.
+- **Attacker’s Perspective**: Use tools like `nmap`, `nikto`, and `metasploit` to identify vulnerabilities and target specific services.
 
-### Remote Desktop Protocols in Linux (Attacker Perspective)
+
+### **Network Penetration Testing**  
+Network penetration testing involves simulating real-world attacks on a network to identify vulnerabilities and security gaps. This includes testing firewalls, routers, endpoints, and protocols to uncover exploitable weaknesses.
+- **Attacker’s Perspective**: Leverage tools and techniques like port scanning, packet sniffing, and exploit frameworks to assess and exploit network vulnerabilities.
+
+
+### **Network Forensics**  
+Network forensics is the practice of capturing, analyzing, and preserving network traffic data to investigate security incidents. It helps identify attackers, their methods, and compromised data by examining logs, packets, and artifacts.
+- **Attacker’s Perspective**: Cover tracks by tampering with logs, encrypting traffic, or using obfuscation techniques to complicate forensic analysis.
+
+
+### **Network Defense**  
+Network defense encompasses strategies and tools to protect networks from attacks. This includes firewalls, intrusion prevention systems (IPS), access control mechanisms, and network segmentation.
+- **Attacker’s Perspective**: Analyze and bypass defensive mechanisms, exploit weak configurations, or disable security controls to compromise the network.
+
+
+### **Remote Desktop Protocols in Linux**  
 Remote desktop protocols allow graphical remote access to systems, commonly used for remote administration and troubleshooting. Attackers can leverage these protocols to gain unauthorized access, capture sensitive data, or manipulate system settings.
 
-#### XServer (X11)
+#### **XServer (X11)**
 XServer facilitates graphical user interfaces on Unix/Linux systems. It uses TCP ports (6001-6009) for communication. Although X11 offers network transparency, it lacks encryption, making it vulnerable to attacks. X11 sessions can be tunneled through SSH for security.
 
 - **Attacker's Perspective**: Exploit unencrypted X11 sessions to capture keystrokes, screenshots, or inject commands remotely.
 
-#### XDMCP
+#### **XDMCP**
 XDMCP enables remote X Window sessions over UDP port 177. It is insecure due to a lack of encryption, making it susceptible to man-in-the-middle attacks.
 
 - **Attacker's Perspective**: Intercept XDMCP traffic to gain unauthorized access to remote graphical interfaces.
 
-#### VNC (Virtual Network Computing)
+#### **VNC (Virtual Network Computing)**
 VNC allows remote desktop sharing based on the RFB protocol. It provides encryption and authentication but can be exploited if misconfigured.
 
 - **Attacker's Perspective**: Exploit weak passwords, intercept traffic, or brute-force VNC services to gain remote desktop control.

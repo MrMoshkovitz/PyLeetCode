@@ -8,7 +8,7 @@ Below is a **comprehensive Attacker Commands Cheat Sheet** in the style of your 
 - By thinking about each command from an **Attacker’s Perspective**, you can better understand how to **secure** and **monitor** your Linux environment.
 
 
----
+
 
 ### Helpful Commands
 This are helpful commands for attackers to understand the system and the tools that are available and how to use them.
@@ -709,6 +709,57 @@ This are containerization commands for attackers to understand the containerizat
 | **`TCP Wrappers`**      | Controls access to network services based on IP address rules.                                                                               | - Analyze or manipulate `/etc/hosts.allow` and `/etc/hosts.deny` for unauthorized access.<br>- Whitelist attacker-controlled IPs for persistence.                            |
 | | **1. `vim /etc/hosts.allow`**: Adds allowed hosts to access specific services.                                                                                       | Add attacker IPs to bypass access controls.                                                                                                                                  |
 | | **2. `vim /etc/hosts.deny`**: Blocks access to specified services for certain hosts.                                                                                 | Block legitimate users to disrupt monitoring or defenses.                                                                                                                    |
+
+
+
+
+### Network Intrusion Detection
+| **Command/Tool**          | **Description**                                                                 | **Attacker’s Perspective**                                                                                          |
+|---------------------------|---------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
+| **`snort`**               | Open-source IDS that detects and logs suspicious traffic.                        | Analyze Snort rules to craft undetectable payloads or identify bypass techniques.                                   |
+| **`suricata`**            | An IDS/IPS tool for real-time traffic analysis.                                  | Evade detection by using encrypted or obfuscated payloads.                                                          |
+| **`tcpdump`**             | Captures network traffic for analysis.                                          | Identify IDS monitoring points by analyzing mirrored or intercepted traffic.                                        |
+| **`iptables`**            | Configures firewall rules.                                                      | Modify rules to block IDS traffic or create backdoors.                                                              |
+| **`grep -i "alert"`**      | Searches IDS logs for specific alerts.                                          | Identify triggering patterns and adjust attack vectors accordingly.                                                 |
+
+---
+
+### Network Penetration Testing
+| **Command/Tool**          | **Description**                                                                 | **Attacker’s Perspective**                                                                                          |
+|---------------------------|---------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
+| **`nmap`**                | Network scanner to discover hosts, ports, and services.                         | Enumerate live hosts and open ports to identify vulnerable services.                                                |
+| | **`nmap -sS -Pn <target>`**: Stealth scan that avoids full TCP handshakes.                                | Reduce detection chances while enumerating services.                                                                |
+| **`metasploit`**          | Exploitation framework to execute vulnerabilities.                              | Automate and deploy exploits against identified weaknesses.                                                         |
+| **`hping3`**              | Packet crafting tool to simulate attacks.                                       | Bypass firewalls and IDS with custom TCP, UDP, or ICMP packets.                                                     |
+| **`wireshark`**           | Analyzes network traffic visually.                                              | Inspect and manipulate traffic to find weak protocols or misconfigured devices.                                     |
+
+---
+
+### Network Forensics
+| **Command/Tool**          | **Description**                                                                 | **Attacker’s Perspective**                                                                                          |
+|---------------------------|---------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
+| **`tcpdump`**             | Captures packets for offline analysis.                                          | Exfiltrate sensitive data by identifying traffic of interest.                                                       |
+| **`tshark`**              | Command-line version of Wireshark for packet analysis.                          | Use encrypted protocols to evade forensic analysis.                                                                 |
+| **`strings <file>`**      | Extracts readable strings from binary files.                                    | Recover or inspect forensic artifacts in captured network traffic.                                                  |
+| **`cat /var/log/messages`** | Views system logs.                                                            | Locate traces of activities to tamper with or cover tracks.                                                         |
+| **`foremost`**            | Extracts files from raw network data.                                           | Hide malicious payloads within legitimate-looking traffic.                                                          |
+
+---
+
+### Network Defense
+| **Command/Tool**          | **Description**                                                                 | **Attacker’s Perspective**                                                                                          |
+|---------------------------|---------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
+| **`ufw`**                 | Uncomplicated Firewall, simplifies firewall rule management.                    | Enumerate firewall rules for misconfigurations and exploit allowed traffic.                                         |
+| | **`ufw status`**: Displays active rules.                                                                 | Identify allowed traffic to design attacks.                                                                        |
+| **`iptables`**            | Configures and manages advanced firewall rules.                                 | Disable or modify rules to allow malicious traffic.                                                                 |
+| | **`iptables -L`**: Lists all rules.                                                                      | Analyze defensive configurations for weaknesses.                                                                   |
+| **`fail2ban`**            | Protects services by banning IPs after repeated login attempts.                 | Launch low-and-slow brute force attacks to avoid triggering bans.                                                   |
+| **`openvas`**             | Vulnerability scanner for network defense.                                      | Enumerate and test vulnerabilities in defensive configurations.                                                     |
+| **`auditd`**              | Monitors and logs security-relevant system activity.                            | Disable or tamper with logs to avoid detection.                                                                     |
+
+
+
+---
 
 
 
