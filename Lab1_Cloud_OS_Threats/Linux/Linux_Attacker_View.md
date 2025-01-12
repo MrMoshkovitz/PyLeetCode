@@ -293,3 +293,23 @@ For attackers, these capabilities enable reconnaissance of user accounts, privil
 2. **Manipulate Swap Space**: Exploit sensitive data stored in unencrypted swap areas.
 3. **Bypass Permissions**: Use inode numbers from `ls -il` to reference hidden or inaccessible files directly.
 4. **Persistence**: Add custom mount entries to `/etc/fstab` for persistent access to drives.
+
+
+### Containerization - Short Description
+
+- **Definition**: Containerization packages applications and their dependencies into isolated environments for efficient and secure deployment.  
+- **Technologies**: Tools like Docker and Linux Containers (LXC) enable lightweight, portable, and scalable environments.  
+- **Security and Isolation**: Containers isolate applications from the host system and other containers, enhancing security while maintaining performance.  
+- **Attacker’s Perspective**: Containers can be used for testing exploits in isolated environments, hosting malicious files, or escalating privileges through container escapes or misconfigurations.  
+
+#### Optional Exercises for Practice
+
+1. **Create a Custom Docker Image**: Build a Dockerfile with tools like Apache and SSH pre-configured.  
+2. **Install and Manage Docker**: Test the provided Docker installation script, create containers, and manage them using `docker ps`, `docker stop`, and `docker rm`.  
+3. **Test LXC Configurations**: Install LXC, create a container, and configure resource limits (CPU, memory).  
+4. **Escalate Privileges**: Investigate privilege escalation methods in misconfigured containers.  
+5. **Host Malicious Files**: Set up a container as a hosting server using Apache or similar tools to serve payloads.  
+6. **Explore Namespaces**: Test the isolation provided by namespaces and evaluate potential escape techniques.  
+7. **Secure Containers**: Configure Docker or LXC settings to limit access or enforce mandatory security controls.  
+8. **Use Docker Compose**: Create a multi-container setup for testing web applications or networked environments.  
+9. **Clone Git Repositories**: Practice cloning repositories like Evil-WinRM to deploy tools within containers.
