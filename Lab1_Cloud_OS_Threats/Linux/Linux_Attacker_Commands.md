@@ -509,4 +509,34 @@ This are package management commands for attackers to understand the package man
 
 ---
 
+### Task Scheduling Commands
+This are task scheduling commands for attackers to understand the task scheduling, the task scheduling user, the task scheduling group, the task scheduling start time, the task scheduling end time, the task scheduling memory usage, the task scheduling CPU usage, the task scheduling command line, and the task scheduling arguments.
+
+| **Command**                  | **Description**                                                                                       | **Attacker’s Perspective**                                                                                              |
+|------------------------------|-------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
+| **`systemctl`**              | Manages `systemd` services and timers.                                                               | Exploit timers or services to establish persistence or execute malicious scripts.                                      |
+| | **1. `systemctl start mytimer.timer`** | Starts the `mytimer.timer` service immediately.                                              | Test or execute malicious payloads on-demand.                                                                         |
+| | **2. `systemctl enable mytimer.timer`** | Enables the timer to start automatically on boot.                                            | Set up persistent execution for malicious scripts at defined intervals.                                               |
+| | **3. `systemctl daemon-reload`**       | Reloads `systemd` configurations after changes.                                              | Ensure modifications to `systemd` timers or services take effect.                                                     |
+| **`crontab`**                | Manages cron jobs for scheduling repetitive tasks.                                                   | Schedule malicious payloads for persistence or data exfiltration.                                                     |
+| | **1. `crontab -e`**       | Edits the current user's crontab file.                                                              | Add stealthy cron jobs to execute backdoors or exfiltrate data.                                                       |
+| | **2. `crontab -l`**       | Lists the current user's cron jobs.                                                                 | Identify and analyze existing cron jobs for misconfigurations or targets.                                             |
+| | **3. `crontab -r`**       | Removes all cron jobs for the current user.                                                         | Clean up traces of malicious cron jobs after exploitation.                                                            |
+| **Cron Example**             | **Task**: Adds a cron job to execute a script every hour.                                            | Exploit cron for automated persistence.                                                                               |
+| | `0 * * * * /path/to/malicious_script.sh` | Executes `malicious_script.sh` at the start of every hour.                                   | Automate execution of scripts for continuous exploitation or disruption.                                              |
+| **Systemd Timer Example**    | **Task**: Configures a systemd timer to run a malicious script.                                      | Use systemd for stealthier, event-based task scheduling.                                                              |
+| | **Timer**: `/etc/systemd/system/mytimer.timer`                                                                                   | Sets up a timer to execute tasks.                                                                                     |
+| | **Service**: `/etc/systemd/system/mytimer.service`                                                                                | Specifies the script to execute when the timer triggers.                                                              |
+| | **Command**: `OnBootSec=1min`                                                                                                    | Executes the script 1 minute after boot.                                                                              |
+| **`at`**                     | Schedules a one-time task to run at a specified time.                                                | Quickly set up time-based execution of scripts without persistent configurations.                                      |
+| | **1. `echo "/path/to/malicious_script.sh" | at now + 5 minutes`** | Schedules a script to run in 5 minutes.                                         | Use for one-off execution of malicious payloads without leaving traces in `crontab` or `systemd`.                     |
+| **`anacron`**                | Executes periodic tasks that may have been missed due to system downtime.                           | Use for guaranteed execution of payloads even if the system is not running during the scheduled time.                  |
+| | **1. `/etc/anacrontab`**   | Specifies tasks and intervals (daily, weekly, monthly).                                             | Modify anacron jobs to ensure malicious scripts are executed reliably over time.                                       |
+| **`journalctl`**             | Views logs for `systemd` services and timers.                                                       | Analyze logs to verify if malicious timers or services were triggered successfully.                                    |
+| | **1. `journalctl -u mytimer.service`** | Displays logs for the `mytimer.service`.                                                    | Monitor execution of malicious services or timers.                                                                    |
+| **Cron Logging Example**     | Configures cron to log output to a file.                                                            | Use logs to monitor execution of malicious cron jobs and debug issues.                                                |
+| | **Command**: `* * * * * /path/to/malicious_script.sh >> /var/log/cron.log 2>&1`                                                  | Captures both output and errors from the script to `cron.log`.                                                        |
+| **Task Example**: **"Backup Script Automation"** | Automates periodic execution of a script.                                                 | Replace benign scripts with malicious versions to escalate privileges or exfiltrate data during scheduled execution.   |
+
+
 

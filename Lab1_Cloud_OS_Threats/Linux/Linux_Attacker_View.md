@@ -259,3 +259,10 @@ For attackers, these capabilities enable reconnaissance of user accounts, privil
 - **Processes**: Active programs that can be managed using signals or commands to control their behavior (e.g., running, stopping, or killing them).
 - **Tools and Techniques**: Tools like `systemctl`, `ps`, `kill`, and `journalctl` help administrators and attackers manage services and processes effectively.
 - **Importance for Attackers**: Attackers leverage service and process management for persistence (starting malicious services), evasion (killing monitoring processes), and exploration (identifying running services for exploitation).
+
+
+### Task Scheduling:
+- **Core Functionality**: Task scheduling in Linux automates repetitive tasks, ensuring consistency and efficiency without manual intervention.  
+- **Execution Tools**: Tools like `systemd` and `cron` allow administrators to schedule tasks based on time intervals or specific events.  
+- **Key Use Cases**: Tasks include software updates, database maintenance, backups, and executing scripts at defined intervals.  
+- **Importance for Attackers**: Misconfigured or overly permissive scheduling systems can be exploited to execute malicious scripts, maintain persistence, or disrupt critical services.  
