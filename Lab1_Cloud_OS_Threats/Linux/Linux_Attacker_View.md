@@ -272,3 +272,12 @@ For attackers, these capabilities enable reconnaissance of user accounts, privil
 - **Service Interaction**: Knowledge of network services such as SSH, NFS, web servers, and VPNs is crucial for system administrators and penetration testers to manage and secure systems effectively or identify vulnerabilities.  
 - **Penetration Testing**: Attackers exploit misconfigured or outdated network services to gain unauthorized access, exfiltrate data, or escalate privileges.
 
+
+### Backup and Restore 
+- **Core Functionality**: Linux systems provide robust tools for backing up and restoring data, ensuring data protection, encryption, and ease of recovery.  
+- **Tools**: Utilities like `rsync`, `Deja Dup`, and `Duplicity` support local and remote backups, with features like compression, incremental backups, and encryption for secure data transfer.  
+- **Secure Transfers**: Combining tools like `rsync` with SSH ensures encrypted data transfers, safeguarding sensitive information during backups.  
+- **Automation**: Tools like `cron` enable automated synchronization, ensuring regular and consistent backups with minimal manual intervention.  
+- **Importance for Attackers**: Exploiting backup misconfigurations can provide access to sensitive data or backup systems themselves. Automated scripts and credentials in backup processes are often key targets.
+
+
