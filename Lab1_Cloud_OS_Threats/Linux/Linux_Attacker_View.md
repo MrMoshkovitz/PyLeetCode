@@ -538,5 +538,43 @@ Firewalls are critical for managing and securing network traffic, ensuring only 
 - **Firewall Targets**: Actions to apply when rules match packets (e.g., ACCEPT, DROP, REJECT).
 
 
-## System Logs & Monitoring (Sub topic 3)
+### System Logs & Monitoring 
+System logs on Linux provide valuable insights into system activities, user behavior, and potential security events. Attackers can exploit these logs to identify vulnerabilities, detect misconfigurations, or evade detection. Proper logging and monitoring configurations are critical to ensure a secure and robust system.
 
+#### **Key Concepts**
+- **Types of System Logs**:
+  - **Kernel Logs**: Contain system-level events, driver activities, and kernel-related events. Useful for identifying hardware issues and kernel vulnerabilities.
+  - **System Logs**: Record service activities, system reboots, and login attempts. Help identify system performance issues and unauthorized access.
+  - **Authentication Logs**: Focus on login events, including successful and failed authentication attempts. Crucial for detecting brute-force attacks.
+  - **Application Logs**: Track the behavior of applications such as Apache, MySQL, or SSH. Reveal potential vulnerabilities and misconfigurations.
+  - **Security Logs**: Store events related to firewalls, intrusion prevention, and configuration changes. Useful for monitoring suspicious activities.
+- **Log Analysis**:
+  - Logs can reveal unauthorized access, attempted exploits, and system errors.
+  - Reviewing logs after penetration tests ensures activities are detected and mitigated.
+- **Log Configuration**:
+  - Set proper log levels to capture relevant events.
+  - Use log rotation to prevent large log files from overwhelming storage.
+  - Protect logs against tampering or unauthorized access.
+- **Log Monitoring Tools**:
+  - Tools like **grep, tail, awk, and sed** are used for log filtering and analysis.
+  - Centralized monitoring systems like **ELK Stack (Elasticsearch, Logstash, Kibana)** simplify large-scale log analysis.
+
+
+#### **Example Workflow for Log Analysis**
+1. Use `grep` to search authentication logs for failed login attempts:
+   ```bash
+   grep "Failed password" /var/log/auth.log
+   ```
+   - **Attacker’s Insight**: Identify accounts vulnerable to brute force.
+
+2. Use `journalctl` to inspect recent SSH-related activity:
+   ```bash
+   journalctl -u sshd --since "1 hour ago"
+   ```
+   - **Attacker’s Insight**: Detect misconfigurations or access logs indicating admin activity.
+
+3. Check Apache access logs for suspicious HTTP requests:
+   ```bash
+   cat /var/log/apache2/access.log | grep "wget"
+   ```
+   - **Attacker’s Insight**: Locate signs of file downloads or command injection attempts.
