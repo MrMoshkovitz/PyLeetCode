@@ -139,10 +139,29 @@
 
 # TODO: Current Location
 ## Workflow
-
 - **Hidden File Discovery**: Use `ls -la` to find configuration files or credentials hidden with a dot prefix.
 - **Target Permissions**: Analyze `ls -l` output to spot world-writable directories (`drwxrwxrwx`) or files owned by privileged users.
 - **Temporary Files**: Inspect `/dev/shm` or `/tmp` using `ls -la` for potential leftover files or active processes.
+- **File Search**: Use `find` to locate files based on attributes like size, owner, or type.
+- **File Search**: Use `locate` to quickly search for files using a prebuilt database, enabling faster but less granular searches compared to find.
+- **File Search**: Use `updatedb` to update the `locate` command’s database with the latest file and directory changes.
+- **File Search**: Use `which` to show the path to an executable binary.
+
+### File Descriptors and Redirections
+| **File Descriptor**               | **Description**                                                                                  | **Attacker’s Perspective**                                                                                                   |
+|---------------------------|--------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
+| **`STDIN (FD 0)`**         | Standard input, used for receiving data into a program.                                          | Redirect input from files or devices to manipulate how commands are executed.                                               |
+| **`STDOUT (FD 1)`**        | Standard output, used for sending normal command output.                                         | Capture or redirect the output of commands to files or other commands for further processing.                               |
+| **`STDERR (FD 2)`**        | Standard error, used for sending error messages.                                                | Suppress or log error messages to prevent detection or debugging output.                                                    |
+| **`>`**                | Redirects STDOUT to a file. | Direct command output to files for later analysis or exfiltration. |
+| **`>>`**               | Appends output to a file. | Maintain a continuous log of system exploration for persistence or later reference. |
+| **`2>`**               | Redirects STDERR to a file. | Suppress or isolate errors to avoid detection or clutter in output. |
+| **`2>/dev/null`**      | Redirects STDERR to the null device, discarding errors. | Suppress errors to maintain stealth during enumeration or attacks. |
+| **`1>`**               | Explicitly redirects STDOUT to a file. | Direct standard output to specific files for precise control. |
+| **`<`**                | Redirects STDIN from a file. | Use predefined input for commands, simulating interactive input or automating tasks. |
+| **`<<`**               | Redirects a stream of input (here-doc) to a file or command. | Use custom input streams for crafting payloads or commands dynamically. |
+| **`\|` (Pipe)**          | Redirects STDOUT from one command to another for further processing. | Chain commands to filter, process, or manipulate output efficiently. |
+| **`2>&1`**             | Redirects STDERR to the same destination as STDOUT. | Combine both outputs for comprehensive logging or analysis. |
 
 
 
@@ -339,24 +358,84 @@ The **Find**, **Updatedb/Locate**, and **Which** commands are essential for reco
 | | **12. `cat /proc/cpuinfo`**: Provides detailed CPU information.                                                                         | Determine the hardware architecture for compiling tailored exploits.                                                    |
 | **`sort`**| Sort lines of text. | Organize large output files for easier analysis, such as sorting logs or lists of credentials. |
 | | **1. `sort usernames.txt`**: Alphabetize user lists to identify patterns or duplicates in accounts. | Alphabetize user lists to identify patterns or duplicates in accounts.                                                 |
-| **`grep`**                | Searches for patterns in text.                                                                                 | Extract credentials, tokens, or sensitive data from logs, configs, or command output.                                  |
-| |**1. `grep password`**: Search for the term "password" in files or output.                                                             | Quickly locate hardcoded passwords in configuration files.                                                              |
-| | **2. `grep -i "error" /var/log/syslog`**: Locate error messages in logs for potential misconfigurations or vulnerabilities.                                      |
-| **`cut`**                 | Removes sections from each line of input.                                                                     | Extract specific fields from log entries or configs, e.g., usernames or IP addresses.                                  |
-| | **1. `cut -d':' -f1 /etc/passwd`**: Extracts usernames from `/etc/passwd`.                                                         | Identify user accounts for brute-force attacks or privilege escalation attempts.                                        |
-| | **2. `cut -d':' -f2-4 /etc/group`**: Extract specific group IDs and associated users for further analysis.                                                  |
+
+
+### File Content Filtering Commands
+| **Command** | **Description** | **Attacker’s Perspective** |
+| **`grep`**             | Searches for patterns in text.                                                 | Extract credentials, tokens, or sensitive data from logs, configs, or command output.                                |
+| | **1. `grep password /etc/passwd`**: Searches for the term "password" in files.                        | Quickly locate hardcoded passwords in configuration files.                                                           |
+| | **2. `grep -i "error" /var/log/syslog`**: Case-insensitive search for "error" in system logs.          | Locate error messages indicating misconfigurations or vulnerabilities.                                               |
+| | **3. `grep -v "nologin\|false" /etc/passwd`**: Excludes lines with "nologin" or "false".              | Identify active user accounts for further exploitation.                                                              |
+| | **4. `grep -E "root\|admin" /etc/group`**: Uses extended regex to find specific groups.                | Enumerate privileged groups for potential privilege escalation.                                                      |
+| **`cut`**              | Removes sections from each line of input.                                       | Extract specific fields from log entries or configs, e.g., usernames or IP addresses.                                |
+| | **1. `cut -d':' -f1 /etc/passwd`**: Extracts usernames from `/etc/passwd`.                            | Identify user accounts for brute-force attacks or privilege escalation attempts.                                      |
+| | **2. `cut -d':' -f3 /etc/passwd`**: Extracts UIDs from `/etc/passwd`.                                  | Identify user privileges and target high-value accounts.                                                             |
 | **`tr`**                  | Translates or deletes characters.                                                                             | Clean or manipulate text data, e.g., replacing newline characters for formatting output.                               |
 | | **1. `tr`**: `echo "text" | tr '[:lower:]' '[:upper:]'`                                                       | Convert sensitive output to uppercase for easier comparison or manipulation.                                            |
+| | **2. `echo "admin,root" \| tr ',' '\n'`**: Replaces commas with newlines.                             | Format lists for easier processing or automation.                                                                    |
+| | **3. `cat /etc/passwd \| tr ':' ' '`**: Replaces colons with spaces.                                  | Simplify formatting for readability or compatibility with custom tools.                                              |
 | **`column`**              | Formats text fields into columns.                                                                             | Display data in a structured, readable format for analysis or reporting.                                                |
 | | **1. `column`**: `cat data.txt | column -t`                                                                         | Display tabulated output for better readability when reviewing log files or data dumps.                                |
+| | **2. `cat /etc/passwd \| tr ':' ' ' \| column -t`**: Formats `/etc/passwd` into aligned columns.      | Quickly visualize key data points for analysis.                                                                      |
 | **`awk`**                 | Pattern scanning and processing language.                                                                     | Extract specific fields, filter data, and manipulate text in complex configurations or logs.                            |
 | | **1. `awk`**: `awk '/root/ {print $1}' /etc/passwd`                                                             | Extract and display lines containing "root" to investigate elevated privileges.                                         |
+| | **2. `awk -F':' '{print $1}' /etc/passwd`**: Extracts usernames from `/etc/passwd`.                   | Enumerate users efficiently without additional tools.                                                                |
+| | **3. `awk -F':' '{print $1, $3}' /etc/passwd`**: Extracts usernames and UIDs.                        | Combine critical fields to identify privileged accounts or vulnerabilities.                                          |
+| | **4. `awk -F':' '$3 == 0 {print $1}' /etc/passwd`**: Extracts users with UID 0 (root).                | Identify root-level accounts for privilege escalation opportunities.                                                 |
 | **`sed`**                 | Stream editor for filtering and transforming text.                                                            | Automate replacing sensitive log entries with benign data or remove traces of activity.                                 |
 | | **1. `sed`**: `sed -i '/malicious_command/d' /var/log/auth.log`                                                 | Remove malicious activity traces from authentication logs to evade detection.                                           |
+| | **2. `sed 's/bash/secure_shell/g' /etc/passwd`**: Replaces occurrences of "bash" with "secure_shell".| Modify system configurations to redirect legitimate processes, obfuscate system details, or disrupt functionality.   |
+| | **3. `sed -i '/nologin/d' /etc/passwd`**: Deletes lines containing "nologin".                        | Filter out system accounts to focus solely on interactive user accounts for privilege escalation or lateral movement. |
 | **`wc`**                  | Counts lines, words, and bytes in input.                                                                      | Calculate data size for exfiltration or verify completeness of stolen files.                     
 | | **1. `wc`**: `wc -l /var/log/syslog`                                                                           | Count the number of lines in a log file to estimate data size for exfiltration.                                         |                        |
-| **`nano / vim`**                | Powerful editor for making extensive changes, running regex replacements, or automating edits via scripting.            |
+| | **2. `wc -l /etc/passwd`**: Counts the number of lines in `/etc/passwd`.                              | Determine the number of user accounts or entries quickly.                                                            |
+| | **3. `cat logs.txt \| wc -c`**: Counts the number of characters in a file.                           | Estimate file size for efficient data transfer or staging.                                                           |
+| **`nano / vim`**                | Powerful editor for making extensive changes, running regex replacements, or automating edits via scripting.            | Modify system files or scripts for persistence, obfuscation, or privilege escalation. |
 | | **1. `nano / vim`**: `nano /etc/cron.d/persistence` or `vim /etc/cron.d/persistence`                                   | Insert a cron job to establish persistent access to the system.                                                         |
+| **`less`**             | Displays file contents one screen at a time with navigation features.          | Analyze large files stealthily without leaving output in the terminal history.                                       |
+| | **1. `less /var/log/auth.log`**: Opens the authentication log for analysis.                          | Investigate recent logins, SSH attempts, or suspicious activity.                                                     |
+| | **2. `cat /etc/passwd \| less`**: Paginates the `/etc/passwd` file.                                  | Review user accounts incrementally without overwhelming the terminal.                                                |
+| **`head`**             | Displays the first few lines of a file.                                        | Preview files to locate sensitive data quickly or confirm file relevance.                                            |
+| | **1. `head -n 5 /etc/passwd`**: Displays the first 5 lines of `/etc/passwd`.                         | Identify initial entries, such as system and root accounts.                                                          |
+| | **2. `head -n 10 /var/log/syslog`**: Displays the first 10 lines of the system log.                  | Review the start of logs for system initialization or errors.                                                        |
+| **`tail`**             | Displays the last few lines of a file.                                         | Examine recent log entries or monitor live data updates.                                                             |
+| | **1. `tail -n 10 /var/log/syslog`**: Displays the last 10 lines of the system log.                   | Investigate recent system activity or responses to an ongoing attack.                                                |
+| | **2. `tail -f /var/log/auth.log`**: Monitors the authentication log in real-time.                   | Observe login attempts or SSH connections as they occur.                                                             |
+| **`sort`**             | Sorts lines of text in a file or output.                                       | Organize data for better analysis, e.g., sorting user lists or log entries.                                          |
+| | **1. `cat /etc/passwd \| sort`**: Sorts the `/etc/passwd` file alphabetically.                       | Identify patterns, duplicates, or anomalies in user account configurations.                                          |
+| | **2. `cat logs.txt \| sort -n`**: Sorts log entries numerically.                                     | Analyze data with numerical values, such as timestamps or IDs, for trends or inconsistencies.                        |
+
+
+#### Regex Filtering Commands - for Offensive Security
+| **Command** | **Description** | **Attacker’s Perspective** |
+| **`grep`** | Searches for patterns in text using regular expressions. | Leverage RegEx to extract specific data, validate inputs, or locate misconfigurations in files. |
+| | **1. `grep -E "(my\|false)" /etc/passwd`**: Searches for lines containing "my" or "false". | Identify specific patterns in files for analysis or exploitation, e.g., misconfigured services or accounts. |
+| | **2. `grep -E "(my.*false)" /etc/passwd`**: Searches for lines containing both "my" and "false". | Locate entries where multiple conditions overlap, useful for narrowing down potential vulnerabilities. |
+| | **3. `grep -E "Permit.*" /etc/ssh/sshd_config`**: Searches for lines starting with "Permit". | Quickly identify SSH configuration parameters for validation or targeting misconfigurations. |
+| | **4. `grep -E "Authentication$" /etc/ssh/sshd_config`**: Searches for lines ending with "Authentication". | Focus on specific configuration lines related to authentication mechanisms. |
+| | **5. `grep -E "^Password.*yes$" /etc/ssh/sshd_config`**: Finds lines beginning with "Password" and ending with "yes". | Pinpoint insecure configurations like password authentication enabled in SSH settings. |
+| | **6. `grep -v "#" /etc/ssh/sshd_config`**: Displays all non-commented lines. | Filter out comments to focus on active configuration entries for analysis or exploitation. |
+| **`awk`**               | Processes text using pattern matching and field extraction.                    | Automate advanced RegEx-based filtering for extracting or manipulating data.                                         |
+| | **1. `awk '/^Password.*yes$/' /etc/ssh/sshd_config`**: Finds lines starting with "Password" and ending with "yes". | Detect weak password-based authentication in SSH configurations.                                                     |
+| | **2. `awk '/^[^#]/' /etc/ssh/sshd_config`**: Extracts lines that do not start with `#`.               | Quickly identify uncommented active configuration settings in target files.                                          |
+| **`sed`**               | Stream editor for applying regular expressions to text.                        | Edit or transform text dynamically for obfuscation, persistence, or configuration manipulation.                      |
+| | **1. `sed -n '/Permit/p' /etc/ssh/sshd_config`**: Prints lines containing "Permit".                   | Target specific SSH options to identify or exploit insecure settings.                                                |
+| | **2. `sed -i 's/PermitRootLogin yes/PermitRootLogin no/' /etc/ssh/sshd_config`**: Replaces "yes" with "no" for `PermitRootLogin`. | Exploit or fix insecure configurations dynamically during post-exploitation.                                         |
+| **Regex Patterns**      | Standalone regular expressions for text searching or validation.               | Analyze complex data or extract information directly using patterns without relying on specific commands.            |
+| | **1. `/^Permit.*$/`**: Matches lines starting with "Permit".                                          | Useful for analyzing configurations or policy files like `sshd_config`.                                              |
+| | **2. `/yes$/`**: Matches lines ending with "yes".                                                     | Identify configurations that explicitly allow specific actions or permissions.                                        |
+| | **3. `/^[^#]/`**: Matches lines that do not start with `#`.                                           | Filter active lines from configuration files by excluding comments.                                                  |
+| | **4. `/[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+/`**: Matches email addresses.                  | Extract email addresses from files or logs for phishing campaigns or OSINT operations.                               |
+| | **5. `/\b\d{3}-\d{2}-\d{4}\b/`**: Matches social security numbers (e.g., 123-45-6789).                | Locate sensitive data like SSNs in compromised datasets for further exploitation.                                     |
+| **`find`**              | Uses regex-like patterns to locate files.                                       | Search for specific files or directories based on naming patterns or extensions.                                     |
+| | **1. `find /etc -regex '.*\.conf$'`**: Finds all `.conf` files in `/etc`.                              | Locate configuration files that may contain sensitive information or misconfigurations.                              |
+| | **2. `find / -regex '.*(shadow\|passwd)$' 2>/dev/null`**: Searches for files named `shadow` or `passwd`. | Enumerate critical system files for privilege escalation or data extraction.                                         |
+| **`egrep`**             | Extended version of `grep` supporting more complex regex.                      | Simplify the use of advanced RegEx patterns in search operations.                                                    |
+| | **1. `egrep -i "(error\|failed)" /var/log/syslog`**: Searches for lines containing "error" or "failed". | Quickly identify logs indicating vulnerabilities or attack surfaces.                                                 |
+| | **2. `egrep "^\s*[^#]" /etc/ssh/sshd_config`**: Matches active lines ignoring leading whitespace.      | Focus on uncommented active configurations, even with irregular formatting.                                           |
+| **Python Regex**        | Leverages Python for advanced regex processing.                                | Automate filtering, validation, or manipulation of large datasets programmatically.                                  |
+| | **1. `re.findall(r'[0-9a-fA-F]{32}', text)`**: Finds 32-character MD5 hashes in a string.             | Extract potential credentials, API keys, or sensitive data from dumps or logs.                                       |
+| | **2. `re.sub(r'(password: )\w+', r'\1REDACTED', text)`**: Replaces passwords with "REDACTED".         | Sanitize sensitive data in logs or outputs during post-exploitation.                                                 |
 
 
 ---
@@ -413,3 +492,35 @@ The **Find**, **Updatedb/Locate**, and **Which** commands are essential for reco
 | | **3. `find /etc/ -type f -user root -perm -o+w 2>/dev/null`**: Finds files writable by others but owned by root. | Locate critical files with insecure permissions for tampering or exploitation.                                       |
 
 ---
+
+
+### File Descriptors and Redirections
+| **Command**            | **Description**  | **Attacker’s Perspective** |
+|------------------------|------------------|--------------------------|
+| **`>`**                   | Redirects STDOUT to a file, overwriting it.                                                      | Capture standard output for documentation or exfiltration purposes.                                                         |
+| | **1. `find /etc/ -name shadow > results.txt`**: Redirects STDOUT to a file.                                                | Store results from enumeration commands for further analysis.                                                               |
+| **`>>`**                  | Redirects STDOUT to a file, appending the output.                                                | Append enumeration results or log activities without overwriting existing data.                                             |
+| | **1. `find /etc/ -name passwd >> stdout.txt`**: Appends output to a file.                                                  | Maintain a continuous log of system exploration for persistence or later reference.                                         |
+| **`2>`**                  | Redirects STDERR to a file.                                                                      | Suppress or isolate errors to avoid detection or clutter in output.                                                         |
+| | **1. `find /etc/ -name shadow 2> stderr.txt`**: Redirects errors to a file.                                                | Capture error messages to analyze permission issues or debug unsuccessful commands.                                         |
+| **`2>/dev/null`**         | Redirects STDERR to the null device, discarding errors.                                          | Suppress errors to maintain stealth during enumeration or attacks.                                                          |
+| | **1. `find /etc/ -name shadow 2>/dev/null`**: Suppresses errors.                                                           | Hide "Permission denied" errors to avoid drawing attention during reconnaissance.                                           |
+| **`1>`**                  | Explicitly redirects STDOUT to a file.                                                           | Direct standard output to specific files for precise control.                                                               |
+| | **1. `find /etc/ -name shadow 1> stdout.txt`**: Redirects STDOUT to a file.                                                | Separate standard output for clean logging or analysis.                                                                    |
+| **`<`**                   | Redirects STDIN from a file.                                                                     | Use predefined input for commands, simulating interactive input or automating tasks.                                        |
+| | **1. `cat < stdout.txt`**: Redirects input from a file to the `cat` command.                                               | Review the content of previously captured output files.                                                                     |
+| **`<<`**                  | Redirects a stream of input (here-doc) to a file or command.                                     | Use custom input streams for crafting payloads or commands dynamically.                                                     |
+| | **1. `cat << EOF > stream.txt`**: Writes a stream of input to a file.                                                      | Save arbitrary input to files for later use or crafting scripts during exploitation.                                         |
+| **`\|` (Pipe)**            | Redirects STDOUT from one command to another for further processing.                             | Chain commands to filter, process, or manipulate output efficiently.                                                        |
+| | **1. `find /etc/ -name *.conf 2>/dev/null \| grep systemd`**: Filters output for lines containing "systemd".                   | Narrow results to target specific configurations or files of interest.                                                      |
+| | **2. `find /etc/ -name *.conf 2>/dev/null \| grep systemd \| wc -l`**: Counts the filtered results.                             | Quantify findings to assess the size of attackable surfaces or validate enumeration success.                                |
+| **`2>&1`**               | Redirects STDERR to the same destination as STDOUT.                                              | Combine both outputs for comprehensive logging or analysis.                                                                 |
+| | **1. `find /etc/ -name shadow > combined.txt 2>&1`**: Redirects STDOUT and STDERR to the same file.                        | Collect all output in one place to avoid missing important data.                                                            |
+| **More Examples** | **More Commands Examples** | **Attacker's Perspective** |
+| **`find /etc/ -name shadow 2>/dev/null`** | Redirects STDERR to the null device, discarding errors. | Hide "Permission denied" errors during directory traversal. |
+| **`find /etc/ -name shadow > results.txt`** | Redirects STDOUT to a file. | Store reconnaissance findings for offline analysis or reporting. |
+| **`find /etc/ -name shadow > combined.txt 2>&1`** | Redirects STDOUT and STDERR to the same file. | Collect all output in one place to avoid missing important data. |
+| **`find /etc/ -name *.conf 2>/dev/null \| grep systemd \| wc -l`** | Filters output for lines containing "systemd". | Narrow results to target specific configurations or files of interest <br>-Identify, filter, and quantify specific results in one step. |
+
+
+
