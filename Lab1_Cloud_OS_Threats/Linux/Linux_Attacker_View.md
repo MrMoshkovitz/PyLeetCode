@@ -501,7 +501,42 @@ Linux systems are generally considered more secure than many alternatives, such 
     Security is an ongoing process requiring regular updates, training, and familiarity with the system. Administrators who understand the nuances of their Linux environment can implement better and more effective protections.
 
 
-## Firewall Setup 
+### **Firewall Setup**
+Firewalls are critical for managing and securing network traffic, ensuring only authorized connections and data exchanges occur between systems. Attackers often aim to identify and exploit misconfigured firewalls to bypass restrictions or access sensitive resources.
+- **Misconfigured rules** can leave ports or services open to exploitation.
+- **Weak filtering criteria** or excessive allowances can permit unauthorized access.
+- **Outdated firewall tools or policies** may not handle modern threats effectively.
+
+
+#### **Firewall Functions**
+- **Monitor** -  Monitor and control traffic between network segments.
+- **Filter** - Filter packets based on IP addresses, ports, and protocols.
+- **Protect** - Protect systems from unauthorized access, DoS attacks, and malicious traffic.
+
+#### **Linux Firewall Tools**
+- **iptables**: Traditional and widely used command-line tool for managing firewall rules.
+- **nftables**: Modern alternative to iptables with better performance and usability.
+- **UFW (Uncomplicated Firewall)**: Simplifies iptables management for less technical users.
+- **FirewallD**: Dynamic and flexible tool for complex configurations and zones.
+
+#### **Key Components**
+- **Tables**: Organize firewall rules by function (e.g., filtering, NAT, packet mangling).
+- **Chains**: Group rules by traffic type (e.g., input, output, forward).
+- **Rules**: Define filtering criteria and actions for matching packets.
+- **Targets**: Actions to apply when rules match packets (e.g., ACCEPT, DROP, REJECT).
+
+#### **Attack Surface**
+- **Misconfigured rules**: Can leave ports or services open to exploitation.
+- **Weak filtering criteria**: Can permit unauthorized access.
+- **Outdated firewall tools or policies**: May not handle modern threats effectively.
+
+
+### **Firewall Configuration**
+- **Firewall Rules**: Define filtering criteria and actions for matching packets.
+- **Firewall Tables**: Organize firewall rules by function (e.g., filtering, NAT, packet mangling).
+- **Firewall Chains**: Group rules by traffic type (e.g., input, output, forward).
+- **Firewall Targets**: Actions to apply when rules match packets (e.g., ACCEPT, DROP, REJECT).
+
 
 ## System Logs & Monitoring (Sub topic 3)
 
