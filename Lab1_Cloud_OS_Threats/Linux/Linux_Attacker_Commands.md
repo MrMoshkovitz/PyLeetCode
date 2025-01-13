@@ -97,10 +97,11 @@ This are process commands for attackers to understand the process, the process I
 | **Command**   | **Description**                      | **Attacker’s Perspective**                                                                                           |
 |---------------|--------------------------------------|----------------------------------------------------------------------------------------------------------------------|
 | **`ps`**      | Displays process status.             | Enumerate running processes for reconnaissance, identifying root or high-privilege processes to target.              |
-| | **1. `ps aux`**: Show all processes with details.     | Quickly identify resource-heavy or suspicious processes.                                                             |
-| | **2. `ps -ef`**: Display full-format listing.         | Analyze parent-child process relationships for injection or privilege escalation opportunities.                      |
-| | **3. `ps -eo pid,ppid,cmd,%mem,%cpu`**: Show custom fields for process monitoring. | Focus on high CPU/memory-consuming processes for potential exploits or disruptions.                                 |
-| | **4. `ps -C sshd`**: Show specific processes by name. | Locate critical services like SSH for monitoring or attack.                                                          |
+| | **1. `ps aux`**: Show all processes with details.     | Quickly identify resource-heavy or suspicious processes. <br>**a**: Shows processes for all users <br>**u**: Displays the process's user/owner <br>**x**: Includes processes not attached to a terminal |
+| | **2. `ps aux \| less`**: Show all processes with details and pipe to less pages for easier reading.     | Quickly identify resource-heavy or suspicious processes. <br> **\|** pipe to less pages for easier reading <br>**less** to scroll through the output |
+| | **3. `ps -ef`**: Display full-format listing.         | Analyze parent-child process relationships for injection or privilege escalation opportunities.                      |
+| | **4. `ps -eo pid,ppid,cmd,%mem,%cpu`**: Show custom fields for process monitoring. | Focus on high CPU/memory-consuming processes for potential exploits or disruptions.                                 |
+| | **5. `ps -C sshd`**: Show specific processes by name. | Locate critical services like SSH for monitoring or attack.                                                          |
 | **`top` / `htop`** | Monitors system resources in real-time. | Track high-priority targets or identify suspicious system activity to blend in with.                                 |
 | | **1. `htop`**: Interactive process viewer.             | Provides easier navigation and filtering for live reconnaissance.                                                    |
 | | **2. `top -p <PID>`**: Monitor specific processes by PID. | Focus on particular processes for detailed observation.                                                              |
@@ -117,7 +118,7 @@ This are process commands for attackers to understand the process, the process I
 | | **2. `renice -n 10 <PID>`**: Decrease priority of a process. | Throttle performance of monitoring tools or competing processes.                                                     |
 | **`strace`**   | Traces system calls and signals.    | Monitor process behavior, including file and network operations, for reconnaissance or evasion.                     |
 | | **1. `strace -p <PID>`**: Attach to a running process. | Investigate activity of target processes to identify weaknesses or gain insights into their operation.               |
-
+| | **2. `strace -e trace=file -p <PID>`**: Trace file operations. | Monitor file access patterns for data exfiltration or privilege escalation.                                          |
 
 ---
 

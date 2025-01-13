@@ -31,6 +31,8 @@
    - Boot disk size: `10GB`
    - Hostname: `cloud-sec-xdr-vm-1.lab1.linx.threat-analysis-detection.com`
    - Service Account: `cloud-sec-xdr-admin`
+   - Private IP: `10.10.0.3`
+   - Public IP: `34.123.176.78`
 
 
 4. [ x ] **Enable Compute Engine Services** ✅
@@ -58,3 +60,5 @@
      - Role Name: `xdr-vm-role`
      - Permissions: Minimum required for VM management.
    - Apply the role to the `cloud-sec-xdr-admin` service account. -->
+
+currentUser=$(whoami)
