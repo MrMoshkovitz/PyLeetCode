@@ -62,3 +62,4 @@
    - Apply the role to the `cloud-sec-xdr-admin` service account. -->
 
 currentUser=$(whoami)
+
