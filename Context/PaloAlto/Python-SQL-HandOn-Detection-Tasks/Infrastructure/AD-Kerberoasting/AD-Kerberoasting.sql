@@ -1,0 +1,1 @@
+-- Write SQL queries to analyze Active Directory logs and detect potential Kerberoasting attempts. The goal is to identify potentially compromised or misconfigured accounts based on criteria such as password age, last logon time, and group memberships.

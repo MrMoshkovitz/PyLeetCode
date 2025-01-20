@@ -1,0 +1,2 @@
+-- SQL Task for Security Product Analysis
+-- Write SQL queries to analyze SIEM log data stored in a relational database to identify potential security product evasion attempts. The queries should help identify instances where traffic patterns or user behaviors indicate attempts to bypass or manipulate security controls.

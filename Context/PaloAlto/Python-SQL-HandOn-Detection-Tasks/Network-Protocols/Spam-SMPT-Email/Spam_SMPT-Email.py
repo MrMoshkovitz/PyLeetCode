@@ -1,0 +1,2 @@
+# Create a Python script to analyze SMTP logs and detect potential spam or malicious email activity. 
+# The goal is to identify IP addresses that are sending an unusually high volume of emails within a specific time frame.
