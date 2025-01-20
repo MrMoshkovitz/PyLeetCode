@@ -1,0 +1,2 @@
+-- Write SQL queries to analyze Azure AD sign-in logs stored in a relational database to identify potential password spray attacks. 
+-- The queries should identify multiple failed login attempts across numerous accounts from the same IP address or IP range within a short time frame.

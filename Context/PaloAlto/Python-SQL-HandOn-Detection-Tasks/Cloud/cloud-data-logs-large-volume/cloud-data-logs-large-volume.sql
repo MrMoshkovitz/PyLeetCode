@@ -1,0 +1,1 @@
+-- Task Description: Write SQL queries to analyze cloud data access patterns stored in a relational database. The goal is to identify potential insider threats by detecting users accessing an unusually high volume of sensitive data or accessing data outside their normal work patterns.

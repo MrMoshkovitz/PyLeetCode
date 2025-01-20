@@ -1,0 +1,2 @@
+-- Write SQL queries to analyze Azure AD audit logs stored in a relational database to identify suspicious privilege escalation activities. 
+-- The queries should detect patterns where a user is added to a highly privileged role shortly after being granted a lower-level role.
